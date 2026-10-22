@@ -1,0 +1,1052 @@
+<title>Midterm 2 Practice Set</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: single-column worksheet. Sections group topics, each question is a block with drawn structures and tappable choices. */
+:root {
+  --bg: #fbfbf9;
+  --ink: #1c2530;
+  --muted: #5d6877;
+  --rule: #d9dde3;
+  --accent: #2456c4;
+  --tint: #eaf1fb;
+  --good: #1d7a46;
+  --good-bg: #e3f3e9;
+  --bad: #b3322b;
+  --bad-bg: #fbe8e6;
+  --font-body: "Albert Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Spline Sans Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171e; --ink: #e6eaf0; --muted: #97a2b1; --rule: #2a323d; --accent: #7fa6f5; --tint: #182437;
+    --good: #6fcf97; --good-bg: #16301f; --bad: #f08a82; --bad-bg: #3a1c1a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171e; --ink: #e6eaf0; --muted: #97a2b1; --rule: #2a323d; --accent: #7fa6f5; --tint: #182437;
+  --good: #6fcf97; --good-bg: #16301f; --bad: #f08a82; --bad-bg: #3a1c1a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5;
+  padding-block: 28px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.sheet { max-width: 880px; margin: 0 auto; display: flex; flex-direction: column; gap: 36px; }
+.top { border-bottom: 2px solid var(--ink); padding-bottom: 14px; display: flex; flex-direction: column; gap: 12px; }
+h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); font-weight: 700; letter-spacing: -0.01em; margin: 0; text-wrap: balance; }
+.meter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.bar { flex: 1 1 160px; height: 8px; border-radius: 4px; background: var(--rule); overflow: hidden; min-width: 0; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .25s; }
+.score { font-family: var(--font-mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.score b { color: var(--ink); font-weight: 500; }
+.reset { font: inherit; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); background: transparent; border: 1.5px solid var(--accent); border-radius: 999px; padding: 5px 14px; min-height: 34px; cursor: pointer; }
+.reset:hover { background: var(--tint); }
+.reset:focus-visible, .opt:focus-visible, .theme-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+h2.sec { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 0; padding-bottom: 6px; border-bottom: 1px solid var(--rule); }
+.q { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.qh { display: flex; gap: 8px; align-items: baseline; }
+.n { color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; flex: none; }
+.qtext { margin: 0; font-weight: 600; font-size: 1.05rem; max-width: 64ch; text-wrap: pretty; }
+.sub { font-weight: 400; color: var(--muted); }
+
+svg.struct { display: block; max-width: 100%; height: auto; overflow: visible; color: var(--ink); }
+svg.struct line { stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+svg.struct text { fill: currentColor; font-family: var(--font-body); font-size: 14px; font-weight: 500; }
+svg.struct .ch { fill: none; stroke: currentColor; stroke-width: 1.2; }
+
+.eq { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
+.eq .sym { font-size: 1.3rem; color: var(--muted); }
+.arrow { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.arrow .rg { font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.1; white-space: nowrap; }
+.arrow svg { display: block; }
+.arrow path { stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+
+.opts { display: flex; flex-direction: column; gap: 8px; }
+.opts.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.opts.row { flex-direction: row; flex-wrap: wrap; }
+.opt { font: inherit; color: inherit; text-align: left; cursor: pointer; background: transparent; border: 1.5px solid var(--rule); border-radius: 8px; padding: 9px 12px; display: flex; gap: 10px; align-items: center; min-width: 0; }
+.opts.grid .opt { flex-direction: column; align-items: stretch; justify-content: space-between; gap: 6px; }
+.opt:hover:not(:disabled) { border-color: var(--accent); background: var(--tint); }
+.opt .let { font-family: var(--font-mono); font-weight: 500; color: var(--accent); flex: none; min-width: 1.5em; }
+.opt .body { min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.opts:not(.grid) .opt .body { align-items: flex-start; }
+.opts.row .opt { padding: 6px 12px; font-size: 0.92rem; }
+.opt .cap { font-size: 0.9rem; color: var(--muted); text-align: center; }
+.opt.good { border-color: var(--good); background: var(--good-bg); }
+.opt.bad { border-color: var(--bad); background: var(--bad-bg); opacity: 0.75; }
+.opt:disabled { cursor: default; color: inherit; }
+.fb { margin: 0; font-size: 0.92rem; min-height: 1.3em; max-width: 64ch; }
+.fb.good { color: var(--good); }
+.fb.bad { color: var(--bad); }
+
+.opts.cols { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 8px; }
+.opts.grid.rx { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); }
+.opts.rx .opt { flex-direction: row; align-items: center; }
+.opts.grid .opt { justify-content: flex-start; }
+.rxo { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; min-width: 0; }
+.rxo .arrow { flex: none; align-items: center; max-width: 150px; }
+.rxo .arrow .rg { white-space: normal; text-align: center; font-size: 0.74rem; }
+.rgs { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.rgs .rg { font-family: var(--font-mono); font-size: 0.8rem; }
+.opts.grid .opt .body { align-items: flex-start; }
+.step { display: flex; flex-direction: column; gap: 12px; border-left: 3px solid var(--rule); padding-left: 14px; min-width: 0; }
+.step .qtext { font-weight: 500; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+.card { border: 1px solid var(--rule); border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cardmol { display: flex; align-items: center; gap: 10px; min-height: 96px; justify-content: center; }
+.cardmol .let { font-family: var(--font-mono); color: var(--accent); align-self: flex-start; }
+.card .fb { font-size: 0.84rem; min-height: 0; }
+
+.theme-btn { position: fixed; top: calc(12px + env(safe-area-inset-top, 0px)); right: calc(12px + env(safe-area-inset-right, 0px)); z-index: 50; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--rule); background: var(--bg); color: var(--ink); font-size: 1.15rem; line-height: 1; cursor: pointer; display: grid; place-items: center; box-shadow: 0 1px 6px rgba(0,0,0,.15); }
+.theme-btn:hover { border-color: var(--accent); color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .bar i { transition: none; } }
+</style>
+<button type="button" id="themeBtn" class="theme-btn" aria-label="Toggle dark mode" aria-pressed="false" title="Toggle dark mode"></button>
+<main class="sheet">
+  <header class="top">
+    <h1>Midterm 2 Practice Set</h1>
+    <div class="meter">
+      <div class="bar" role="progressbar" aria-label="Questions answered" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barWrap"><i id="barFill"></i></div>
+      <span class="score" id="score"></span>
+      <button type="button" class="reset" id="resetBtn">Start over</button>
+    </div>
+  </header>
+  <div id="root" class="sheet"></div>
+</main>
+<script>
+(function () {
+  var D = Math.PI / 180;
+
+  /* ---------- tiny skeletal-structure engine ---------- */
+  function Mol() { this.a = []; this.b = []; this.rings = []; this.chg = []; }
+  Mol.prototype.atom = function (x, y, l, ang) { this.a.push({ x: x, y: y, l: l || '', ang: ang == null ? 90 : ang }); return this.a.length - 1; };
+  Mol.prototype.bond = function (i, j, o) { this.b.push([i, j, o || 1]); };
+  function ring(M, n, dbl, labels, start) {
+    start = start == null ? 90 : start;
+    var R = 0.5 / Math.sin(Math.PI / n), ids = [], k;
+    for (k = 0; k < n; k++) { var ang = start - k * 360 / n; ids.push(M.atom(R * Math.cos(ang * D), -R * Math.sin(ang * D), (labels && labels[k]) || '', ang)); }
+    for (k = 0; k < n; k++) M.bond(ids[k], ids[(k + 1) % n], dbl && dbl.indexOf(k) > -1 ? 2 : 1);
+    M.rings.push({ ids: ids, cx: 0, cy: 0 });
+    return ids;
+  }
+  function sub(M, id, ang, l, o) {
+    var a = M.a[id]; if (ang == null) ang = a.ang;
+    var n = M.atom(a.x + Math.cos(ang * D), a.y - Math.sin(ang * D), l, ang);
+    M.bond(id, n, o); return n;
+  }
+  function chain(M, id, steps) { var c = id; steps.forEach(function (s) { c = sub(M, c, s[0], s[1] || '', s[2]); }); return c; }
+  function zig(n, dbl, labels) {
+    var M = new Mol(), ids = [], i;
+    for (i = 0; i < n; i++) ids.push(M.atom(i * 0.866, i % 2 ? -0.5 : 0, (labels && labels[i]) || '', i % 2 ? 90 : -90));
+    for (i = 0; i < n - 1; i++) M.bond(ids[i], ids[i + 1], dbl && dbl.indexOf(i) > -1 ? 2 : 1);
+    M.ids = ids; return M;
+  }
+  function benz(map) { var M = new Mol(), r = ring(M, 6, [0, 2, 4]); for (var k in map) sub(M, r[k], null, map[k]); M.r = r; return M; }
+  function rg(n, dbl, labels, start, subs, chg) {
+    var M = new Mol(), r = ring(M, n, dbl, labels, start);
+    if (subs) for (var k in subs) sub(M, r[k], null, subs[k]);
+    if (chg) for (var c in chg) M.chg.push({ id: r[c], s: chg[c] });
+    return M;
+  }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function lab(l) { return esc(l).replace(/([A-Za-z])(\d)/g, '$1<tspan style="baseline-shift:sub" font-size="10">$2</tspan>'); }
+  function svg(M, S) {
+    S = S || 26;
+    var minx = 1e9, maxx = -1e9, miny = 1e9, maxy = -1e9;
+    function ext(x0, x1, y0, y1) { minx = Math.min(minx, x0); maxx = Math.max(maxx, x1); miny = Math.min(miny, y0); maxy = Math.max(maxy, y1); }
+    M.a.forEach(function (a) { var hw = a.l ? 0.25 + 0.09 * a.l.length : 0.08, hh = a.l ? 0.4 : 0.08; ext(a.x - hw, a.x + hw, a.y - hh, a.y + hh); });
+    M.chg.forEach(function (c) { var a = M.a[c.id]; var x = a.x + 0.6 * Math.cos(a.ang * D), y = a.y - 0.6 * Math.sin(a.ang * D); ext(x - 0.3, x + 0.3, y - 0.3, y + 0.3); });
+    var P = 0.2; minx -= P; maxx += P; miny -= P; maxy += P;
+    var W = (maxx - minx) * S, H = (maxy - miny) * S;
+    function px(x) { return ((x - minx) * S).toFixed(1); }
+    function py(y) { return ((y - miny) * S).toFixed(1); }
+    function ln(x1, y1, x2, y2) { return '<line x1="' + px(x1) + '" y1="' + py(y1) + '" x2="' + px(x2) + '" y2="' + py(y2) + '"/>'; }
+    var s = '';
+    M.b.forEach(function (bd) {
+      var A = M.a[bd[0]], B = M.a[bd[1]], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
+      var sa = A.l ? Math.min(0.7, 0.32 + 0.1 * (A.l.length - 1)) : 0, sb = B.l ? Math.min(0.7, 0.32 + 0.1 * (B.l.length - 1)) : 0;
+      var x1 = A.x + ux * sa, y1 = A.y + uy * sa, x2 = B.x - ux * sb, y2 = B.y - uy * sb, nx = -uy, ny = ux;
+      if (bd[2] === 1) { s += ln(x1, y1, x2, y2); return; }
+      var rr = null; M.rings.forEach(function (r) { if (r.ids.indexOf(bd[0]) > -1 && r.ids.indexOf(bd[1]) > -1) rr = r; });
+      if (rr) {
+        var mx = (A.x + B.x) / 2, my = (A.y + B.y) / 2, sg = ((rr.cx - mx) * nx + (rr.cy - my) * ny) > 0 ? 1 : -1, o = 0.17 * sg, sh = 0.14 * L;
+        s += ln(x1, y1, x2, y2);
+        s += ln(x1 + ux * sh + nx * o, y1 + uy * sh + ny * o, x2 - ux * sh + nx * o, y2 - uy * sh + ny * o);
+      } else {
+        s += ln(x1 + nx * 0.07, y1 + ny * 0.07, x2 + nx * 0.07, y2 + ny * 0.07) + ln(x1 - nx * 0.07, y1 - ny * 0.07, x2 - nx * 0.07, y2 - ny * 0.07);
+      }
+    });
+    M.a.forEach(function (a) { if (a.l) s += '<text x="' + px(a.x) + '" y="' + py(a.y) + '" text-anchor="middle" dominant-baseline="central">' + lab(a.l) + '</text>'; });
+    M.chg.forEach(function (c) {
+      var a = M.a[c.id], x = a.x + 0.6 * Math.cos(a.ang * D), y = a.y - 0.6 * Math.sin(a.ang * D), X = +px(x), Y = +py(y);
+      s += '<circle class="ch" cx="' + X + '" cy="' + Y + '" r="6"/><path class="ch" d="M' + (X - 3) + ' ' + Y + 'H' + (X + 3) + (c.s === '+' ? 'M' + X + ' ' + (Y - 3) + 'V' + (Y + 3) : '') + '"/>';
+    });
+    return '<svg class="struct" viewBox="0 0 ' + W.toFixed(1) + ' ' + H.toFixed(1) + '" width="' + Math.round(W) + '" height="' + Math.round(H) + '" role="img" aria-label="structure">' + s + '</svg>';
+  }
+
+  /* ---------- structures ---------- */
+  function butene(k) {
+    var M;
+    if (k === 0) { M = zig(4, [0]); sub(M, M.ids[2], null, 'Br'); return M; }
+    if (k === 1) return zig(5, [2], ['Br']);
+    if (k === 2) { M = zig(4, []); sub(M, M.ids[1], null, 'Br'); return M; }
+    return zig(5, [], ['Br']);
+  }
+  function chex(dbl, cho) { var M = new Mol(), r = ring(M, 6, dbl); if (cho != null) sub(M, r[cho], null, 'CHO'); return M; }
+  function phChain(steps, fn) { var M = new Mol(), r = ring(M, 6, [0, 2, 4]), last = chain(M, r[0], steps); if (fn) fn(M, last); return M; }
+  function iPr() { var M = new Mol(), r = ring(M, 6, [0, 2, 4]), a = sub(M, r[0], null, ''); sub(M, a, 150, ''); sub(M, a, 30, ''); return M; }
+  var acrolein = zig(4, [0, 2], ['', '', '', 'O']);
+  var mve = zig(4, [0], ['', '', 'O', '']);
+  var benzyl = (function () { var M = new Mol(), r = ring(M, 6, [0, 2, 4]), a = sub(M, r[0], null, ''); sub(M, a, 30, 'MgBr'); return M; })();
+  var epox = rg(3, [], { 0: 'O' });
+  var cpdCat = rg(5, [0, 2], null, 90, null, { 4: '+' });
+  var cpdAn = rg(5, [0, 2], null, 90, null, { 4: '-' });
+  var cpdiene = rg(5, [0, 2]);
+  var pyrrole = rg(5, [0, 2], { 4: 'NH' });
+  var furan = rg(5, [0, 2], { 4: 'O' });
+  var pyridine = rg(6, [0, 2, 4], { 0: 'N' });
+  function frost(n, occ, flip) {
+    var R = 34, W = 2 * R + 64, H = 2 * R + 48, cx = W / 2, cy = H / 2, s = '', d = '', k, a, x, y, pts = [];
+    s += '<circle class="ch" cx="' + cx + '" cy="' + cy + '" r="' + R + '" style="opacity:.45"/>';
+    s += '<line x1="' + (cx - R - 10) + '" y1="' + cy + '" x2="' + (cx + R + 10) + '" y2="' + cy + '" stroke-dasharray="3 3" style="stroke-width:1"/>';
+    for (k = 0; k < n; k++) {
+      a = ((flip ? 90 : -90) + k * 360 / n) * D; x = cx + R * Math.cos(a); y = cy - R * Math.sin(a);
+      pts.push([x, y, Math.cos(a), Math.sin(a)]); d += (k ? 'L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+    }
+    s += '<path class="ch" d="' + d + 'Z"/>';
+    pts.forEach(function (p, i) {
+      var t = occ[i] === 2 ? '↑↓' : occ[i] === 1 ? '↑' : '', dx, ty, an;
+      s += '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.2" style="fill:currentColor;stroke:none"/>';
+      if (!t) return;
+      if (Math.abs(p[2]) > 0.2) { dx = p[2] > 0 ? 8 : -8; an = p[2] > 0 ? 'start' : 'end'; ty = p[1] + 4; }
+      else { dx = 0; an = 'middle'; ty = p[3] < 0 ? p[1] + 17 : p[1] - 9; }
+      s += '<text x="' + (p[0] + dx).toFixed(1) + '" y="' + ty.toFixed(1) + '" text-anchor="' + an + '" style="font-size:12px">' + t + '</text>';
+    });
+    return '<svg class="struct" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="Frost circle">' + s + '</svg>';
+  }
+  function sigma(t1, t2, dbl, at, sg) {
+    var M = new Mol(), r = ring(M, 6, dbl);
+    sub(M, r[0], 120, t1); sub(M, r[0], 60, t2);
+    if (at != null) M.chg.push({ id: r[at], s: sg || '+' });
+    return M;
+  }
+  function withChg(M, i, s) { M.chg.push({ id: M.ids[i], s: s || '+' }); return M; }
+  var acetoph = (function () { var M = new Mol(), r = ring(M, 6, [0, 2, 4]), a = sub(M, r[0], 90, ''); sub(M, a, 150, 'O', 2); sub(M, a, 30, ''); return M; })();
+  var propioph = (function () { var M = new Mol(), r = ring(M, 6, [0, 2, 4]), a = sub(M, r[0], 90, ''); sub(M, a, 150, 'O', 2); var c = sub(M, a, 30, ''); sub(M, c, -30, ''); return M; })();
+  function nitroPropyl() { var M = benz({ 3: 'NO2' }); chain(M, M.r[0], [[90], [30], [-30]]); return M; }
+
+  /* ---------- extra drawing helpers (v3) ---------- */
+  function B(l0, st) {
+    var M = new Mol(); M.atom(0, 0, l0 || '', 0);
+    st.forEach(function (s) { var a = M.a[s[0]], n = M.atom(a.x + Math.cos(s[1] * D), a.y - Math.sin(s[1] * D), s[2] || '', s[1]); M.bond(s[0], n, s[3] || 1); });
+    return M;
+  }
+  function P(r, m, t) { return { r: r, m: m, t: t }; }
+  function one(pos, X) { var o = {}; o[pos] = X; return o; }
+  function tbuPh(pos, X) { var M = benz(X ? one(pos, X) : {}), a = sub(M, M.r[0], 90, ''); sub(M, a, 30, ''); sub(M, a, 150, ''); sub(M, a, 90, ''); return M; }
+  function phC(list) { var M = benz({}), a = sub(M, M.r[0], 90, ''); list.forEach(function (s) { sub(M, a, s[0], s[1]); }); return M; }
+  function dap(X, pos, single, d) {
+    d = d == null ? 0 : d;
+    var M = new Mol(), r = ring(M, 6, [d]);
+    sub(M, r[d], null, ''); if (!single) sub(M, r[(d + 1) % 6], null, '');
+    if (X) sub(M, r[pos], null, X);
+    return M;
+  }
+  function birch(dbl, at, X) { var M = new Mol(), r = ring(M, 6, dbl); sub(M, r[at], null, X); return M; }
+  function aryl(fn) { var M = benz({ 0: '' }); fn(M, M.r[1]); return M; }
+  /* small reagents, drawn */
+  var CO2 = (function () { var M = new Mol(), a = M.atom(-1, 0, 'O'), c = M.atom(0, 0, ''), b = M.atom(1, 0, 'O'); M.bond(a, c, 2); M.bond(c, b, 2); return M; })();
+  var HCHO = B('', [[0, 90, 'O', 2]]);
+  var ACH = B('', [[0, 90, 'O', 2], [0, -30, '']]);
+  var ACO = B('', [[0, 90, 'O', 2], [0, -30, ''], [0, 210, '']]);
+  var ACL = B('', [[0, 90, 'O', 2], [0, -30, ''], [0, 210, 'Cl']]);
+  var BUCL = B('', [[0, 90, 'O', 2], [0, 210, 'Cl'], [0, -30, ''], [3, 30, ''], [4, -30, '']]);
+  var CL1 = zig(4, [], ['', '', '', 'Cl']);
+  var CL2 = B('', [[0, 30, ''], [1, -30, ''], [2, 30, ''], [1, 90, 'Cl']]);
+  var ETCL = zig(3, [], ['', '', 'Cl']);
+  var MVK = B('', [[0, 30, '', 2], [1, -30, ''], [2, -90, 'O', 2], [2, 30, '']]);
+  var MACR = B('', [[0, 30, '', 2], [1, -30, ''], [2, -90, 'O', 2], [2, 30, 'O'], [4, -30, '']]);
+  var DMB = B('', [[0, 30, '', 2], [1, 90, ''], [1, -30, ''], [3, -90, ''], [3, 30, '', 2]]);
+  var ISOP = B('', [[0, 30, '', 2], [1, 90, ''], [1, -30, ''], [3, 30, '', 2]]);
+  var PHET = phChain([[90], [30]]);
+  function etPh(pos, X) { var M = benz(X ? one(pos, X) : {}); chain(M, M.r[0], [[90, ''], [30, '']]); return M; }
+  var SECBU = (function () { var M = benz({}), a = sub(M, M.r[0], 90, ''); sub(M, a, 150, ''); var b = sub(M, a, 30, ''); sub(M, b, -30, ''); return M; })();
+  var NBU = phChain([[90], [30], [-30], [30]]);
+  var ISOBU = (function () { var M = benz({}), a = sub(M, M.r[0], 90, ''), b = sub(M, a, 30, ''); sub(M, b, 90, ''); sub(M, b, -30, ''); return M; })();
+  /* 12-step synthesis molecules */
+  function mk(wrong, idx, right) { var l = wrong.slice(); l.splice(idx, 0, right); return l.map(function (x) { return { r: x }; }); }
+  var CH3CL = B('', [[0, 30, 'Cl']]);
+  var S_TOL = benz({ 0: '' });
+  var S_TS = benz({ 0: '', 3: 'SO3H' });
+  var S_TSBR = benz({ 0: '', 1: 'Br', 3: 'SO3H' });
+  var S_ARBR = benz({ 0: '', 1: 'Br' });
+  var S_MG = benz({ 0: '', 1: 'MgBr' });
+  var S_ETOH = aryl(function (M, id) { chain(M, id, [[30, ''], [-30, ''], [30, 'OH']]); });
+  var S_ALD = aryl(function (M, id) { chain(M, id, [[30, ''], [-30, ''], [30, 'O', 2]]); });
+  function sec(X) { return aryl(function (M, id) { var c1 = sub(M, id, 30, ''), c2 = sub(M, c1, -30, ''); sub(M, c2, 30, ''); sub(M, c2, -90, X); }); }
+  var S_ALC = sec('OH'), S_BR = sec('Br'), S_GR = sec('MgBr');
+  var S_ACID = aryl(function (M, id) { var c1 = sub(M, id, 30, ''), c2 = sub(M, c1, -30, ''); sub(M, c2, -90, ''); sub(M, c2, 30, 'COOH'); });
+  var S_FIN = aryl(function (M, id) { var c1 = sub(M, id, 30, ''), c2 = sub(M, c1, -30, ''); sub(M, c2, -90, ''); var c3 = sub(M, c2, 30, ''); sub(M, c3, -30, 'OH'); });
+  var P14 = B('Br', [[0, -30, ''], [1, 30, ''], [2, -30, '', 2], [3, 30, ''], [3, -90, '']]);
+  var P12 = B('', [[0, 30, '', 2], [1, -30, ''], [2, 30, ''], [2, -30, ''], [2, -90, 'Br']]);
+  var PANTI = B('Br', [[0, -30, ''], [1, 30, ''], [2, -30, ''], [3, 30, '', 2], [3, -90, '']]);
+  var P14OH = B('HO', [[0, -30, ''], [1, 30, ''], [2, -30, '', 2], [3, 30, ''], [3, -90, '']]);
+  var DATA3 = [
+    { t: 'Dienes, conjugation and Diels–Alder', items: [
+      { q: 'Isoprene reacts with ONE reagent to give a single major monobromide (the most stable one). Which reagent and product pair is correct?', scheme: [ISOP, { ar: '?' }, '?'], opts: [
+        P('HBr, 60 °C', P14), P('HBr, 0 °C', P14), P('HBr, 60 °C', P12), P('Br2 (1 eq)', P14),
+        P('HCl, 60 °C', P14), P('NaBr, acetone', P14), P('HBr, 60 °C', PANTI), P('HBr, 60 °C', P14OH)],
+        a: 0, why: 'H⁺ adds to C1 to give the tertiary allylic cation. At 60 °C the reaction is under thermodynamic control, so Br⁻ ends up on the far carbon (1,4-adduct, trisubstituted alkene). At 0 °C the 1,2-adduct wins. Br₂ gives a dibromide, HCl gives a chloride, NaBr cannot add to a diene, and the last product would need a primary cation.' },
+      { q: '2,3-Dimethylbutadiene is warmed gently (80 °C) with ONE dienophile and gives a Diels–Alder adduct. Which dienophile and product pair is correct?', scheme: [DMB, '+', '?'], opts: [
+        P(acrolein, dap('CHO', 3)), P(acrolein, dap('CHO', 2)), P(MACR, dap('CHO', 3)), P(mve, dap('OCH3', 3)),
+        P(zig(3, [0]), dap('CH3', 3)), P(MVK, dap('COCH3', 2)), P(zig(2, [0]), dap(null, 3)), P(acrolein, dap('CHO', 3, true))],
+        a: 0, why: 'The EWG-bearing dienophile reacts fast. The two diene termini bond to the dienophile carbons, so the CHO ends up on a homoallylic carbon, with both methyls on the new C=C. Option b puts CHO next to the alkene, c mismatches dienophile and product, d and e use electron-rich or unactivated dienophiles, f misplaces the acetyl, g uses ethene (too unreactive here), and h loses a methyl.' },
+      { q: 'Which diene + dienophile pair builds the cyclohexene shown?', scheme: [dap('COCH3', 3)], opts: [
+        { r: [DMB, MVK] }, { r: [DMB, acrolein] }, { r: [DMB, MACR] }, { r: [zig(4, [0, 2]), MVK] },
+        { r: [ISOP, MVK] }, { r: [DMB, mve] }, { r: [zig(5, [0, 3]), MVK] }, { r: [DMB, zig(3, [0])] }],
+        a: 0, why: 'Work backwards: break the two bonds to the alkene’s allylic carbons. The ring alkene carbons carry the two methyls (from 2,3-dimethylbutadiene), and the acetyl group comes from methyl vinyl ketone. 1,4-Pentadiene is not conjugated, so it cannot react as a diene.' }
+    ] },
+    { t: 'Aromaticity', items: [
+      { q: 'Exactly one of these is aromatic. Which one?', opts: [
+        { m: rg(7, [0, 2, 4], null, 90, null, { 6: '+' }) }, { m: rg(7, [0, 2, 4], null, 90, null, { 6: '-' }) }, { m: rg(3, [0], null, 90, null, { 2: '-' }) }, { m: cpdCat },
+        { m: rg(7, [0, 2, 4]) }, { m: rg(8, [0, 2, 4, 6], null, 112.5) }, { m: cpdiene }, { m: rg(6, [0, 2]) }],
+        a: 0, why: 'The cycloheptatrienyl (tropylium) cation has an empty p orbital in a planar, cyclic, fully conjugated ring with 6 π electrons. Its anion has 8, the cyclopropenyl anion has 4, the cyclopentadienyl cation has 4, and the remaining rings have an sp³ carbon or are not planar.' },
+      { q: 'Which bromide ionizes fastest in ethanol (SN1 / E1)?', opts: [
+        { m: rg(7, [0, 2, 4], null, 90, { 6: 'Br' }) }, { m: rg(7, [], null, 90, { 0: 'Br' }) }, { m: rg(5, [0, 2], null, 90, { 4: 'Br' }) }, { m: benz({ 0: 'Br' }) },
+        { m: rg(6, [0], null, 90, { 2: 'Br' }) }, { m: rg(8, [0, 2, 4, 6], null, 112.5, { 0: 'Br' }) }, { m: rg(4, [0], null, 45, { 2: 'Br' }) }, { m: rg(6, [], null, 90, { 0: 'Br' }) }],
+        a: 0, why: 'Loss of Br⁻ from 7-bromocycloheptatriene gives the aromatic tropylium cation. 5-Bromocyclopentadiene would give an anti-aromatic cation, and bromobenzene’s C–Br bond is on an sp² carbon.' },
+      { q: 'Which hydrocarbon has the most acidic C–H bond?', opts: [
+        { m: cpdiene }, { m: rg(7, [0, 2, 4]) }, { m: rg(5, [0]) }, { m: rg(6, [0, 2]) },
+        { m: rg(3, [0]) }, { m: benz({}) }, { m: rg(8, [0, 2, 4, 6], null, 112.5) }, { m: benz({ 0: '' }) }],
+        a: 0, why: 'Removing H⁺ from cyclopentadiene gives the cyclopentadienyl anion, with 6 π electrons (aromatic). Deprotonating cycloheptatriene would give an anti-aromatic anion with 8.' }
+    ] },
+    { t: 'Frost circles', items: [
+      { q: 'Which Frost circle correctly shows the π electrons of benzene?', opts: [
+        { h: frost(6, [2, 2, 0, 0, 0, 2]) }, { h: frost(6, [2, 2, 2, 0, 0, 0]) }, { h: frost(6, [2, 1, 0, 0, 0, 1]) }, { h: frost(6, [1, 1, 1, 1, 1, 1]) },
+        { h: frost(6, [2, 2, 0, 2, 0, 2]) }, { h: frost(6, [2, 1, 1, 0, 1, 1]) }, { h: frost(6, [2, 0, 2, 0, 2, 0]) }, { h: frost(6, [2, 2, 0, 0, 2, 0]) }],
+        a: 0, why: 'Six electrons fill the three bonding MOs completely: the bottom vertex and both vertices of the degenerate pair below the line.' },
+      { q: 'Which Frost circle correctly shows planar cyclobutadiene (4 π electrons)?', opts: [
+        { h: frost(4, [2, 1, 0, 1]) }, { h: frost(4, [2, 2, 0, 0]) }, { h: frost(4, [2, 0, 2, 0]) }, { h: frost(4, [1, 1, 1, 1]) },
+        { h: frost(4, [2, 1, 1, 0]) }, { h: frost(4, [0, 2, 0, 2]) }, { h: frost(4, [2, 1, 0, 1], true) }, { h: frost(4, [2, 0, 0, 2]) }],
+        a: 0, why: 'Two electrons in the bonding MO, then one each in the two degenerate nonbonding MOs on the dashed line (Hund’s rule).' },
+      { q: 'Which Frost circle correctly shows the cyclopentadienyl anion (6 π electrons)?', opts: [
+        { h: frost(5, [2, 2, 0, 0, 2]) }, { h: frost(5, [2, 2, 2, 0, 0]) }, { h: frost(5, [2, 2, 0, 0, 0]) }, { h: frost(5, [0, 1, 2, 2, 1], true) },
+        { h: frost(5, [2, 1, 1, 0, 0]) }, { h: frost(5, [2, 2, 0, 2, 0]) }, { h: frost(5, [2, 1, 0, 0, 1]) }, { h: frost(5, [1, 1, 1, 1, 1]) }],
+        a: 0, why: 'The bottom MO plus the degenerate bonding pair hold exactly 6 electrons, a filled shell. A vertex-up pentagon is never correct.' },
+      { q: 'Which Frost circle correctly shows the cyclopentadienyl cation (4 π electrons)?', opts: [
+        { h: frost(5, [2, 1, 0, 0, 1]) }, { h: frost(5, [2, 2, 0, 0, 0]) }, { h: frost(5, [1, 1, 1, 0, 1]) }, { h: frost(5, [2, 0, 1, 1, 0]) },
+        { h: frost(5, [2, 2, 2, 0, 0]) }, { h: frost(5, [2, 0, 0, 0, 2]) }, { h: frost(5, [2, 1, 1, 0, 0]) }, { h: frost(5, [2, 1, 0, 0, 1], true) }],
+        a: 0, why: 'Two electrons fill the lowest MO and the last two go one each into the degenerate pair. Unpaired electrons make it anti-aromatic.' },
+      { q: 'Which Frost circle correctly shows the cycloheptatrienyl (tropylium) cation, 6 π electrons?', opts: [
+        { h: frost(7, [2, 2, 0, 0, 0, 0, 2]) }, { h: frost(7, [2, 2, 2, 0, 0, 0, 0]) }, { h: frost(7, [2, 1, 0, 0, 0, 0, 1]) }, { h: frost(7, [2, 2, 0, 2, 0, 0, 0]) },
+        { h: frost(7, [2, 2, 0, 0, 0, 0, 2], true) }, { h: frost(7, [1, 1, 1, 1, 1, 1, 0]) }, { h: frost(7, [2, 0, 0, 0, 0, 0, 0]) }, { h: frost(7, [2, 2, 1, 0, 0, 0, 1]) }],
+        a: 0, why: 'A heptagon has one MO at the bottom and then three degenerate pairs. Six electrons fill the bottom MO and the first pair, leaving the cation closed-shell and aromatic.' },
+      { q: 'Which Frost circle correctly shows the cyclopropenyl cation (2 π electrons)?', opts: [
+        { h: frost(3, [2, 0, 0]) }, { h: frost(3, [0, 1, 1]) }, { h: frost(3, [1, 1, 0]) }, { h: frost(3, [2, 0, 0], true) },
+        { h: frost(3, [2, 2, 0]) }, { h: frost(3, [1, 0, 1]) }, { h: frost(3, [0, 2, 0]) }, { h: frost(3, [1, 1, 0], true) }],
+        a: 0, why: 'Both electrons fill the single bonding MO (a closed shell with 4n+2, n = 0), so the cation is aromatic.' },
+      { q: 'Which Frost circle correctly shows planar cyclooctatetraene (8 π electrons)?', opts: [
+        { h: frost(8, [2, 2, 1, 0, 0, 0, 1, 2]) }, { h: frost(8, [2, 2, 2, 0, 0, 0, 0, 2]) }, { h: frost(8, [2, 2, 0, 2, 0, 0, 0, 2]) }, { h: frost(8, [2, 2, 1, 1, 0, 0, 0, 2]) },
+        { h: frost(8, [2, 1, 1, 1, 0, 0, 1, 1]) }, { h: frost(8, [2, 2, 0, 0, 0, 0, 2, 2]) }, { h: frost(8, [2, 2, 1, 0, 0, 0, 1, 2], true) }, { h: frost(8, [2, 2, 2, 2, 0, 0, 0, 0]) }],
+        a: 0, why: 'Six electrons fill the three bonding levels, and the last two go one each into the two nonbonding MOs on the line.' },
+      { q: 'These Frost circles show four species. Which one is aromatic?', opts: [
+        { h: frost(4, [2, 1, 0, 1]) }, { h: frost(5, [2, 1, 0, 0, 1]) }, { h: frost(3, [2, 0, 0]) }, { h: frost(8, [2, 2, 1, 0, 0, 0, 1, 2]) }],
+        a: 2, why: 'Only the triangle has every electron paired in a bonding MO (closed shell). The others have unpaired electrons in nonbonding MOs.' }
+    ] },
+    { t: 'Mechanisms: does this reagent give this product?', items: [
+      { q: 'Ethylbenzene is treated with ONE reagent. Which reagent and product pair is correct?', scheme: [PHET, { ar: '?' }, '?'], opts: [
+        P('NBS, hν', phC([[150, 'Br'], [30, '']])), P('Br2, FeBr3', phC([[150, 'Br'], [30, '']])), P('NBS, hν', phChain([[90], [30], [-30, 'Br']])), P('NBS, hν', etPh(3, 'Br')),
+        P('Br2, FeBr3', etPh(2, 'Br')), P('Br2 (dark, no catalyst)', phC([[150, 'Br'], [30, '']])), P('NBS, hν', phC([[150, 'OH'], [30, '']])), P('Cl2, hν', phC([[150, 'Br'], [30, '']]))],
+        a: 0, why: 'NBS/hν is radical bromination. Br• removes the benzylic H (the weakest C–H, giving a resonance-stabilized radical), so Br ends up on the benzylic carbon. Br₂/FeBr₃ brominates the ring (ortho/para), never the side chain.' },
+      { q: 'Benzene is treated with ONE alkylating system. Which reagent and product pair is correct?', scheme: [benz({}), { ar: '?' }, '?'], opts: [
+        P([CL1, 'AlCl3'], SECBU), P([CL1, 'AlCl3'], NBU), P([CL1, 'AlCl3'], tbuPh()), P([CL2, 'AlCl3'], NBU),
+        P([BUCL, 'AlCl3'], NBU), P([CL1, 'AlCl3'], ISOBU), P([CL1, 'NaOH'], SECBU), P([CL2, 'AlCl3'], ISOBU)],
+        a: 0, why: 'AlCl₃ pulls Cl⁻ off 1-chlorobutane, and a 1,2-hydride shift turns the primary cation into the more stable secondary cation before benzene attacks, giving sec-butylbenzene. The n-butyl, tert-butyl and isobutyl products cannot form this way, 2-chlorobutane would give sec-butyl, butanoyl chloride gives a ketone in one step, and NaOH cannot make an electrophile.' },
+      { q: 'Phenylmagnesium bromide is treated with ONE electrophile, then H₃O⁺. Which reagent and product pair is correct?', scheme: [benz({ 0: 'MgBr' }), { ar: '?' }, '?'], opts: [
+        P([ACH, 'then H3O+'], phC([[150, 'OH'], [30, '']])), P([ACH, 'then H3O+'], phChain([[90], [30], [-30, 'OH']])), P([ACO, 'then H3O+'], phC([[150, 'OH'], [30, '']])), P([HCHO, 'then H3O+'], phC([[150, 'OH'], [30, '']])),
+        P([epox, 'then H3O+'], phC([[150, 'OH'], [30, '']])), P([CO2, 'then H3O+'], benz({ 0: 'CHO' })), P([ACH, 'then H3O+'], acetoph), P([CO2, 'then H3O+'], phChain([[90, 'OH']]))],
+        a: 0, why: 'The aryl carbon adds to the C=O carbon of acetaldehyde, giving a secondary alkoxide, and H₃O⁺ gives 1-phenylethanol. Acetone would give a tertiary alcohol, formaldehyde benzyl alcohol, ethylene oxide 2-phenylethanol, and CO₂ benzoic acid. A Grignard addition never gives the oxidized ketone.' },
+      { q: 'Anisole is treated with ONE reagent. Which reagent and product pair is correct?', scheme: [benz({ 0: 'OCH3' }), { ar: '?' }, '?'], opts: [
+        P('Na, NH3 (l), CH3OH', birch([0, 3], 0, 'OCH3')), P('Na, NH3 (l), CH3OH', birch([0, 3], 2, 'OCH3')), P('Na, NH3 (l), CH3OH', birch([0, 2], 0, 'OCH3')), P('Na, NH3 (l), CH3OH', birch([], 0, 'OCH3')),
+        P('H2, Pd/C (1 atm)', birch([0, 3], 0, 'OCH3')), P('H2, Pd/C (1 atm)', birch([], 0, 'OCH3')), P('NaOCH3, CH3OH', birch([0, 3], 0, 'OCH3')), P('NBS, hν', birch([0, 3], 0, 'OCH3'))],
+        a: 0, why: 'The Birch reduction gives the 1,4-diene, and an electron-donating group like OCH₃ ends up on a double-bond carbon. Putting OCH₃ on an sp³ carbon is the pattern for electron-withdrawing groups. The conjugated 1,3-diene is never formed, and neither 1 atm H₂/Pd nor an alkoxide reduces a benzene ring.' },
+      { q: 'Benzene reacts with Br₂/FeBr₃. Which structure is the sigma complex?', scheme: [benz({}), { ar: ['Br2', 'FeBr3'] }, '?'], opts: [
+        { m: sigma('H', 'Br', [1, 3], 5) }, { m: sigma('Br', 'Br', [1, 3], 5) }, { m: sigma('H', 'Br', [1, 3], 5, '-') }, { m: sigma('H', 'Br', [1, 3], null) },
+        { m: sigma('H', 'Br', [1, 3], 0) }, { m: sigma('H', 'NO2', [1, 3], 5) }, { m: (function () { var M = benz({ 0: 'Br' }); M.chg.push({ id: M.r[3], s: '+' }); return M; })() }, { m: sigma('H', 'Br', [0, 2, 4], 5) }],
+        a: 0, why: 'One ring carbon becomes sp³ (bearing H and Br) and the remaining five carbons hold a delocalized + charge. Option b has no H to lose, c is negative, d shows no charge, e puts the + on the sp³ carbon, f has the wrong electrophile, g is an aromatic ring with a stray charge, and h has too many double bonds.' }
+    ] },
+    { t: 'Electrophilic aromatic substitution: does this reagent give this product?', items: [
+      { q: 'tert-Butylbenzene is treated with ONE reagent. Which reagent and product pair is correct?', scheme: [tbuPh(), { ar: '?' }, '?'], opts: [
+        P('Br2, FeBr3', tbuPh(3, 'Br')), P('Br2, FeBr3', tbuPh(1, 'Br')), P('Br2, FeBr3', tbuPh(2, 'Br')), P('Cl2, AlCl3', tbuPh(3, 'Br')),
+        P('Br2 (no catalyst, dark)', tbuPh(3, 'Br')), P('HBr', tbuPh(3, 'Br')), P('HNO3, H2SO4', tbuPh(2, 'NO2')), P('SO3, H2SO4', tbuPh(3, 'Br'))],
+        a: 0, why: 'Alkyl groups direct ortho/para, and the bulky tert-butyl group blocks the ortho positions, so para dominates. Meta is wrong for an activator, a chlorinating reagent cannot give a bromide, and Br₂ needs FeBr₃ to react with a ring this unreactive.' },
+      { q: 'Benzaldehyde is treated with ONE reagent. Which reagent and product pair is correct?', scheme: [benz({ 0: 'CHO' }), { ar: '?' }, '?'], opts: [
+        P('HNO3, H2SO4', benz({ 0: 'CHO', 2: 'NO2' })), P('HNO3, H2SO4', benz({ 0: 'CHO', 3: 'NO2' })), P('HNO3, H2SO4', benz({ 0: 'CHO', 1: 'NO2' })), P('Br2, FeBr3', benz({ 0: 'CHO', 2: 'NO2' })),
+        P([ETCL, 'AlCl3'], benz({ 0: 'CHO', 2: '' })), P('SO3, H2SO4', benz({ 0: 'CHO', 3: 'SO3H' })), P('HNO3, H2SO4', benz({ 0: 'CHO', 2: 'NO2', 4: 'NO2' })), P([ACL, 'AlCl3'], benz({ 0: 'CHO', 2: 'COCH3' }))],
+        a: 0, why: 'CHO is electron-withdrawing and meta directing, so one nitro group goes meta. Friedel–Crafts alkylation and acylation both fail on this deactivated ring, and a single equivalent of nitrating mixture adds only one NO₂.' },
+      { q: 'm-Xylene (1,3-dimethylbenzene) is monobrominated with ONE reagent. Which reagent and product pair is correct?', scheme: [benz({ 0: '', 2: '' }), { ar: '?' }, '?'], opts: [
+        P('Br2, FeBr3', benz({ 0: '', 2: '', 3: 'Br' })), P('Br2, FeBr3', benz({ 0: '', 2: '', 1: 'Br' })), P('Br2, FeBr3', benz({ 0: '', 2: '', 4: 'Br' })), P('NBS, hν', benz({ 0: '', 2: '', 3: 'Br' })),
+        P('HNO3, H2SO4', benz({ 0: '', 2: '', 3: 'Br' })), P('Br2 (1 eq), FeBr3', benz({ 0: '', 2: '', 3: 'Br', 5: 'Br' })), P('HBr', benz({ 0: '', 2: '', 3: 'Br' })), P('Cl2, AlCl3', benz({ 0: '', 2: '', 3: 'Br' }))],
+        a: 0, why: 'Each CH₃ directs ortho and para. The position that is ortho to one CH₃ and para to the other is activated twice and is not crowded, so it wins. The position between the two methyls is hindered, and the one meta to both is not activated.' },
+      { q: 'p-Methylanisole (1-methoxy-4-methylbenzene) is nitrated with ONE equivalent of reagent. Which reagent and product pair is correct?', scheme: [benz({ 0: 'OCH3', 3: '' }), { ar: '?' }, '?'], opts: [
+        P('HNO3, H2SO4', benz({ 0: 'OCH3', 3: '', 1: 'NO2' })), P('HNO3, H2SO4', benz({ 0: 'OCH3', 3: '', 2: 'NO2' })), P('HNO3, H2SO4', benz({ 0: 'OCH3', 3: 'CH2NO2' })), P('Br2, FeBr3', benz({ 0: 'OCH3', 3: '', 1: 'NO2' })),
+        P('NBS, hν', benz({ 0: 'OCH3', 3: '', 1: 'NO2' })), P('HNO3, H2SO4', benz({ 0: 'OCH3', 3: '', 1: 'NO2', 5: 'NO2' })), P('SO3, H2SO4', benz({ 0: 'OCH3', 3: '', 1: 'NO2' })), P('H2SO4', benz({ 0: 'OCH3', 3: '', 1: 'NO2' }))],
+        a: 0, why: 'When two ortho/para directors compete, the stronger activator wins: OCH₃ > CH₃. Its para position is taken, so NO₂ adds ortho to OCH₃. Nitrating the CH₃ group is not an EAS reaction, and one equivalent adds only one NO₂.' },
+      { q: 'Anisole undergoes Friedel–Crafts acylation with ONE system. Which reagent and product pair is correct?', scheme: [benz({ 0: 'OCH3' }), { ar: '?' }, '?'], opts: [
+        P([ACL, 'AlCl3'], benz({ 0: 'OCH3', 3: 'COCH3' })), P([ACL, 'AlCl3'], benz({ 0: 'OCH3', 2: 'COCH3' })), P([ACL, 'AlCl3'], (function(){var M=benz({0:'OCH3'});chain(M,M.r[3],[[-90,''],[-30,'']]);return M;})()), P([ETCL, 'AlCl3'], benz({ 0: 'OCH3', 3: 'COCH3' })),
+        P([ACL, 'NaOH'], benz({ 0: 'OCH3', 3: 'COCH3' })), P([ACL, 'AlCl3'], benz({ 0: 'OCH3', 3: 'Br' })), P([ACL, 'AlCl3'], benz({ 0: 'OCH3', 3: 'COCH3', 1: 'COCH3' })), P([BUCL, 'AlCl3'], benz({ 0: 'OCH3', 3: 'COCH3' }))],
+        a: 0, why: 'The acylium ion attacks para to OCH₃ (para beats ortho for steric reasons). The product ketone is deactivated, so it stops after one acylation. A ketone is not reduced under these conditions (that needs Zn(Hg)/HCl), and a different acid chloride gives a different ketone.' },
+      { q: 'Chlorobenzene is sulfonated. Which reagent and product pair is correct?', scheme: [benz({ 0: 'Cl' }), { ar: '?' }, '?'], opts: [
+        P('SO3, H2SO4', benz({ 0: 'Cl', 3: 'SO3H' })), P('SO3, H2SO4', benz({ 0: 'Cl', 2: 'SO3H' })), P('SO3, H2SO4', benz({ 0: 'Cl', 1: 'SO3H' })), P('dilute H2SO4, H2O, heat', benz({ 0: 'Cl', 3: 'SO3H' })),
+        P('HNO3, H2SO4', benz({ 0: 'Cl', 3: 'SO3H' })), P('SO3, H2SO4', benz({ 0: 'Cl', 3: 'NO2' })), P('NaOH, H2O', benz({ 0: 'Cl', 3: 'SO3H' })), P('H2SO4 only (cold, dilute)', benz({ 0: 'Cl', 3: 'SO3H' }))],
+        a: 0, why: 'Halogens deactivate the ring but still direct ortho/para, and the large SO₃H group goes para. Dilute aqueous acid would do the reverse reaction (desulfonation) instead.' }
+    ] },
+  ];
+  var DATA2 = [
+    { t: 'Conjugation and dienes', items: [
+      { q: 'Which diene is the most stable?', opts: [
+        { m: zig(6, [0, 4]), t: '1,5-hexadiene' }, { m: zig(6, [0, 3]), t: '1,4-hexadiene' }, { m: zig(6, [0, 2]), t: '1,3-hexadiene' }, { m: zig(6, [1, 3]), t: '2,4-hexadiene' }],
+        a: 3, why: '2,4-Hexadiene is conjugated, and both of its double bonds are disubstituted. 1,3-Hexadiene is also conjugated but has a less stable terminal alkene.' },
+      { q: 'What is the major product at 0 °C?', scheme: [zig(4, [0, 2]), { ar: 'HBr (1 eq)', un: '0 °C' }, '?'], opts: [
+        { m: butene(0), t: '3-bromobut-1-ene' }, { m: butene(1), t: '1-bromobut-2-ene' }, { m: butene(2), t: '2-bromobutane' }, { m: butene(3), t: '1-bromobutane' }],
+        a: 0, why: 'Low temperature gives the kinetic product, the 1,2 adduct, because the bromide closes on the nearest carbon of the allylic cation.' },
+      { q: 'What is the major product at 60 °C?', scheme: [zig(4, [0, 2]), { ar: 'HBr (1 eq)', un: '60 °C' }, '?'], opts: [
+        { m: butene(0), t: '3-bromobut-1-ene' }, { m: butene(1), t: '1-bromobut-2-ene' }, { m: butene(2), t: '2-bromobutane' }, { m: butene(3), t: '1-bromobutane' }],
+        a: 1, why: 'Higher temperature lets the reaction reach equilibrium, so the more stable 1,4 adduct (disubstituted alkene) wins.' },
+      { q: 'A reaction can give a kinetic and a thermodynamic product. Which pairing is correct?', opts: [
+        { t: 'The thermodynamic product has the lower E<sub>a</sub> and is more stable' },
+        { t: 'The kinetic product has the lower E<sub>a</sub> and is less stable' },
+        { t: 'The kinetic product has the lower E<sub>a</sub> and is more stable' },
+        { t: 'The thermodynamic product has the higher E<sub>a</sub> and is less stable' }],
+        a: 1, why: 'The kinetic product forms fastest (lowest barrier) but sits higher in energy. The thermodynamic product is the most stable one.' }
+    ] },
+    { t: 'Molecular orbital theory', items: [
+      { q: 'In 1,3,5-hexatriene (6 π electrons), which π molecular orbital is the HOMO?', opts: [{ t: 'ψ<sub>1</sub>' }, { t: 'ψ<sub>2</sub>' }, { t: 'ψ<sub>3</sub>' }, { t: 'ψ<sub>4</sub>' }],
+        a: 2, why: 'Six electrons fill ψ₁, ψ₂ and ψ₃. ψ₃ is the HOMO and ψ₄ is the LUMO.' },
+      { q: 'How many nodes (between carbons) does ψ<sub>4</sub> of 1,3,5-hexatriene have?', opts: [{ t: '1' }, { t: '2' }, { t: '3' }, { t: '4' }],
+        a: 2, why: 'Each higher π MO adds one node, so ψₙ has n − 1 nodes. ψ₄ has 3.' },
+      { q: 'How are the six π MOs of benzene classified?', opts: [
+        { t: '3 bonding, 0 nonbonding, 3 antibonding' }, { t: '2 bonding, 2 nonbonding, 2 antibonding' }, { t: '4 bonding, 0 nonbonding, 2 antibonding' }, { t: '1 bonding, 4 nonbonding, 1 antibonding' }],
+        a: 0, why: 'On the Frost circle for a hexagon, three orbitals sit below the midline, none on it, and three above. Six electrons fill the three bonding MOs.' },
+      { q: 'A Frost circle for planar cyclooctatetraene (an octagon with a vertex at the bottom) has how many nonbonding MOs?', opts: [{ t: '0' }, { t: '1' }, { t: '2' }, { t: '4' }],
+        a: 2, why: 'Two vertices of the octagon sit on the midline. The last two electrons go one each into these degenerate orbitals, which is why a planar ring would be antiaromatic.' },
+      { q: 'How do you draw a Frost circle for a cyclic, fully conjugated ring?', opts: [
+        { t: 'Inscribe the polygon with one vertex pointing down; each vertex is an MO, and the height of the vertex is its energy' },
+        { t: 'Inscribe the polygon with one vertex pointing up; each vertex is an MO, and the height of the vertex is its energy' },
+        { t: 'Inscribe the polygon with a flat edge on the bottom; each edge is an MO' },
+        { t: 'Draw a circle, then place one MO at every second vertex' }],
+        a: 0, why: 'A vertex always points down. The dashed line through the center separates bonding (below) from antibonding (above). MOs on the line are nonbonding.' },
+      { q: 'Which Frost circle correctly shows the π electrons of benzene?', opts: [
+        { h: frost(6, [2, 2, 0, 0, 0, 2]) }, { h: frost(6, [2, 2, 2, 0, 0, 0]) }, { h: frost(6, [2, 1, 0, 0, 0, 1]) }, { h: frost(6, [1, 1, 1, 1, 1, 1]) }],
+        a: 0, why: 'Six electrons fill the three bonding MOs completely (the bottom vertex and the degenerate pair below the line). B fills only one of the degenerate pair, C has only 4 electrons, and D leaves the bonding MOs half empty.' },
+      { q: 'Which Frost circle correctly shows planar cyclobutadiene (4 π electrons)?', opts: [
+        { h: frost(4, [2, 1, 0, 1]) }, { h: frost(4, [2, 2, 0, 0]) }, { h: frost(4, [2, 0, 2, 0]) }, { h: frost(4, [1, 1, 1, 1]) }],
+        a: 0, why: 'Two electrons fill the bonding MO. The last two go one each into the two degenerate nonbonding MOs (Hund’s rule), leaving unpaired electrons, which is why it is anti-aromatic.' },
+      { q: 'Which Frost circle correctly shows the cyclopentadienyl anion (6 π electrons)?', opts: [
+        { h: frost(5, [2, 2, 0, 0, 2]) }, { h: frost(5, [2, 2, 2, 0, 0]) }, { h: frost(5, [2, 2, 0, 0, 0]) }, { h: frost(5, [0, 1, 2, 2, 1], true) }],
+        a: 0, why: 'The bottom MO plus the degenerate bonding pair hold exactly 6 electrons, a filled shell. D is drawn with a vertex up, which is never correct.' },
+      { q: 'Which Frost circle correctly shows the cyclopentadienyl cation (4 π electrons)?', opts: [
+        { h: frost(5, [2, 1, 0, 0, 1]) }, { h: frost(5, [2, 2, 0, 0, 0]) }, { h: frost(5, [1, 1, 1, 0, 1]) }, { h: frost(5, [2, 0, 1, 1, 0]) }],
+        a: 0, why: 'Two electrons in the lowest MO, then one each in the degenerate bonding pair. The unpaired electrons make it anti-aromatic.' },
+      { q: 'Which Frost circle correctly shows the cyclopropenyl cation (2 π electrons)?', opts: [
+        { h: frost(3, [2, 0, 0]) }, { h: frost(3, [0, 1, 1]) }, { h: frost(3, [1, 1, 0]) }, { h: frost(3, [2, 0, 0], true) }],
+        a: 0, why: 'Both electrons fill the single bonding MO, a closed shell (4n+2 with n = 0), so the cation is aromatic. In D the vertex points up.' },
+      { q: 'Which Frost circle correctly shows planar cyclooctatetraene (8 π electrons)?', opts: [
+        { h: frost(8, [2, 2, 1, 0, 0, 0, 1, 2]) }, { h: frost(8, [2, 2, 2, 0, 0, 0, 0, 2]) }, { h: frost(8, [2, 2, 0, 2, 0, 0, 0, 2]) }, { h: frost(8, [2, 2, 1, 1, 0, 0, 0, 2]) }],
+        a: 0, why: 'Three bonding MOs hold 6 electrons. The last 2 go singly into the two nonbonding MOs on the line.' },
+      { q: 'These Frost circles show four species. Which one is aromatic?', opts: [
+        { h: frost(4, [2, 1, 0, 1]) }, { h: frost(5, [2, 1, 0, 0, 1]) }, { h: frost(3, [2, 0, 0]) }, { h: frost(8, [2, 2, 1, 0, 0, 0, 1, 2]) }],
+        a: 2, why: 'Only the triangle has all of its electrons paired in bonding MOs (a closed shell). The others have unpaired electrons in nonbonding MOs.' }
+    ] },
+    { t: 'Diels–Alder reaction', items: [
+      { q: 'The Diels–Alder reaction is what kind of reaction?', opts: [{ t: 'Sigmatropic rearrangement' }, { t: 'Electrocyclic reaction' }, { t: 'Cycloaddition' }, { t: 'Elimination' }],
+        a: 2, why: 'It is a [4+2] cycloaddition: a 4 π-electron diene and a 2 π-electron dienophile form a six-membered ring.' },
+      { q: 'Predict the product.', scheme: [zig(4, [0, 2]), '+', acrolein, { ar: 'heat' }, '?'], opts: [
+        { m: chex([0], 3), t: 'A' }, { m: chex([0], 2), t: 'B' }, { m: chex([], 3), t: 'C' }, { m: chex([0], 0), t: 'D' }],
+        a: 0, why: 'The new double bond forms between the diene’s two middle carbons. The CHO ends up on a carbon next to a former diene terminus, so it is two bonds away from the alkene (3-cyclohexene-1-carbaldehyde).' },
+      { q: 'Which dienophile reacts fastest with 1,3-butadiene?', opts: [
+        { m: mve, t: 'methyl vinyl ether' }, { m: acrolein, t: 'acrolein' }, { m: zig(3, [0]), t: 'propene' }, { m: zig(2, [0]), t: 'ethene' }],
+        a: 1, why: 'An electron-withdrawing group lowers the dienophile’s LUMO, so it matches the diene’s HOMO better. The CHO group does this.' },
+      { q: 'Which diene is expected to be the most reactive?', opts: [
+        { m: zig(4, [0, 2]), t: '1,3-butadiene' }, { m: cpdiene, t: 'cyclopentadiene' }, { m: zig(5, [0, 3]), t: '1,4-pentadiene' }, { t: 'a diene locked in the s-trans conformation' }],
+        a: 1, why: 'Cyclopentadiene is locked in the s-cis conformation, so it is always ready to react. 1,4-Pentadiene is not conjugated and an s-trans diene cannot reach the dienophile.' },
+      { q: 'In a normal Diels–Alder reaction, which orbital interaction forms the new σ bonds?', opts: [
+        { t: 'LUMO of the diene with the LUMO of the dienophile' }, { t: 'HOMO of the diene with the HOMO of the dienophile' },
+        { t: 'HOMO of the diene with the LUMO of the dienophile' }, { t: 'LUMO of the diene with the HOMO of the dienophile' }],
+        a: 2, why: 'The electron-rich diene donates from its HOMO into the LUMO of the electron-poor dienophile.' },
+      { q: 'Why is the endo product usually major?', opts: [
+        { t: 'The endo product is more stable than the exo product' },
+        { t: 'The electron-withdrawing group overlaps favorably with the developing π bond in the transition state' },
+        { t: 'The diene can only reach the s-cis conformation in the endo transition state' },
+        { t: 'The electron-withdrawing group forms a partial bond to the diene only in the endo product' }],
+        a: 1, why: 'Secondary orbital overlap lowers the endo transition state, so endo forms faster (kinetic control).' },
+      { q: 'Why does heating a Diels–Alder reaction to 400 °C give back starting materials?', opts: [
+        { t: 'No lab can support a temperature that high' },
+        { t: 'The reaction has a negative ΔS, so at high temperature −TΔS makes ΔG positive and the retro reaction is favored' },
+        { t: 'At high temperature the diene can no longer adopt the s-cis conformation' },
+        { t: 'At high temperature the dienophile becomes less electron-poor' }],
+        a: 1, why: 'Two molecules become one, so entropy drops. Since ΔG = ΔH − TΔS, high T flips ΔG positive.' },
+      { q: 'Which statement best describes the mechanism?', opts: [
+        { t: 'The diene is protonated to an allylic cation, then the dienophile attacks in a second step' },
+        { t: 'One σ bond forms a radical intermediate, then the second bond forms' },
+        { t: 'Both new σ bonds form in a single concerted step with no intermediates' },
+        { t: 'Three separate steps with two intermediates, one for each curved arrow' }],
+        a: 2, why: 'The Diels–Alder reaction is concerted, with one cyclic transition state.' }
+    ] },
+    { t: 'Aromaticity', items: [
+      { group: 'Classify each molecule as aromatic, anti-aromatic, or nonaromatic.', cards: [
+        { m: cpdCat, a: 1, why: 'Planar, cyclic, conjugated, with 4 π electrons: anti-aromatic.' },
+        { m: pyrrole, a: 0, why: 'The N lone pair joins the ring, giving 6 π electrons.' },
+        { m: rg(8, [0, 2, 4, 6], null, 112.5), a: 2, why: 'It bends out of plane to avoid anti-aromaticity.' },
+        { m: rg(3, [0], null, 90, null, { 2: '+' }), a: 0, why: '2 π electrons in a planar three-membered ring.' },
+        { m: furan, a: 0, why: 'One O lone pair joins the ring for 6 π electrons.' },
+        { m: rg(4, [0, 2], null, 45), a: 1, why: '4 π electrons in a small, rigid, planar ring.' },
+        { m: cpdAn, a: 0, why: 'The extra pair completes 6 π electrons.' },
+        { m: rg(5, [0, 2]), a: 2, why: 'The sp3 CH2 breaks the continuous conjugation.' }] },
+      { q: 'Cyclobutadiene is anti-aromatic, but cyclooctatetraene is nonaromatic. Why?', opts: [
+        { t: 'Cyclooctatetraene is aromatic because it has 8 π electrons' },
+        { t: 'Cyclooctatetraene is larger and flexible, so it bends out of plane, while cyclobutadiene is too small and rigid to bend' },
+        { t: 'Cyclobutadiene is larger, so it can pucker' },
+        { t: 'Both follow Hückel’s rule, but only one is cyclic' }],
+        a: 1, why: 'Both have 4n π electrons. A ring that can leave the plane avoids the antibonding penalty and is called nonaromatic.' },
+      { q: 'Which compound is the most acidic?', opts: [
+        { m: rg(7, [0, 2, 4]), t: '1,3,5-cycloheptatriene' }, { m: cpdiene, t: 'cyclopentadiene' }, { m: rg(6, [0, 2]), t: '1,3-cyclohexadiene' }, { m: rg(5, [0]), t: 'cyclopentene' }],
+        a: 1, why: 'Removing a proton from cyclopentadiene gives the aromatic cyclopentadienyl anion (6 π electrons).' },
+      { q: 'Which compound has the lowest activation energy for an E1/SN1 reaction?', opts: [
+        { m: rg(6, [], null, 90, { 0: 'Br' }), t: 'bromocyclohexane' }, { m: rg(3, [0], null, 90, { 2: 'Br' }), t: '3-bromocyclopropene' },
+        { m: rg(3, [], null, 90, { 2: 'Br' }), t: 'bromocyclopropane' }, { m: rg(5, [0, 2], null, 90, { 4: 'Br' }), t: '5-bromocyclopentadiene' }],
+        a: 1, why: 'Loss of Br⁻ from 3-bromocyclopropene gives the aromatic cyclopropenyl cation. 5-Bromocyclopentadiene would give an anti-aromatic cation.' },
+      { q: 'Which compound is more basic at nitrogen?', opts: [
+        { m: pyrrole, t: 'pyrrole' }, { m: pyridine, t: 'pyridine' }, { t: 'they are equally basic' }, { t: 'neither is basic' }],
+        a: 1, why: 'Pyrrole’s lone pair is part of the aromatic sextet, so protonating it destroys aromaticity. Pyridine’s lone pair sits in the ring plane and is available.' }
+    ] },
+    { t: 'Mechanisms', items: [
+      { q: 'HBr adds to 1,3-butadiene. Which intermediate forms after the first step?', scheme: [zig(4, [0, 2]), { ar: 'HBr' }, '?'], opts: [
+        { m: withChg(zig(4, [2]), 1), t: 'secondary allylic cation' }, { m: withChg(zig(4, [2]), 0), t: 'primary cation' },
+        { m: withChg(zig(4, [2]), 3), t: 'vinylic cation' }, { m: withChg(zig(4, []), 0), t: 'butyl cation' }],
+        a: 0, why: 'H⁺ adds to a terminal carbon, so the cation lands on C2, next to the remaining C=C. That makes it allylic and resonance-stabilized.' },
+      { q: 'What is the other resonance contributor of this allylic cation?', scheme: [withChg(zig(4, [2]), 1), '↔', '?'], opts: [
+        { m: withChg(zig(4, [1]), 3), t: '' }, { m: withChg(zig(4, [2]), 0), t: '' }, { m: withChg(zig(4, []), 1), t: '' }, { t: 'It has no other resonance structure' }],
+        a: 0, why: 'The π bond slides over to the carbon that held the cation, and the cation moves to the far terminal carbon. Only electrons move, never atoms.' },
+      { q: 'Which description of the curved arrows in the first step of HBr addition to an alkene is correct?', opts: [
+        { t: 'The π bond attacks the H of H–Br, and the H–Br bond electrons leave with Br' }, { t: 'A Br lone pair attacks an alkene carbon, and the π bond breaks toward H' },
+        { t: 'The H–Br bond breaks homolytically to give H• and Br•' }, { t: 'The π bond attacks Br, and the H–Br bond electrons go to H' }],
+        a: 0, why: 'The alkene is the nucleophile and H⁺ is the electrophile. The arrow starts at the π bond, points to H, and a second arrow takes the H–Br bond to Br.' },
+      { q: 'In the first step of nitration of benzene, where does the first curved arrow start and end?', opts: [
+        { t: 'From a π bond of the ring to the N of NO₂⁺' }, { t: 'From a lone pair on O of NO₂⁺ to a ring carbon' }, { t: 'From a ring C–H bond to the N of NO₂⁺' }, { t: 'From the N of NO₂⁺ to a ring carbon' }],
+        a: 0, why: 'The ring is the nucleophile (arrow starts at its π bond) and NO₂⁺ is the electrophile (arrow ends at N). An N=O π bond then moves onto O so N keeps an octet.' },
+      { q: 'Nitration of benzene: which structure is the sigma complex?', scheme: [benz({}), { ar: 'NO2+' }, '?'], opts: [
+        { m: sigma('H', 'NO2', [1, 3], 5), t: '' }, { m: sigma('NO2', 'NO2', [1, 3], 5), t: '' }, { m: sigma('H', 'NO2', [1, 3], 5, '-'), t: '' }, { m: sigma('H', 'NO2', [1, 3], null), t: '' }],
+        a: 0, why: 'One ring carbon becomes sp³ (H and NO₂) and the ring keeps a positively charged pentadienyl system. B has no H to lose, C is negative, and D shows no charge.' },
+      { q: 'In the sigma complex, the positive charge is delocalized onto which carbons relative to the sp³ carbon?', opts: [
+        { t: 'The two ortho carbons and the para carbon' }, { t: 'The two meta carbons only' }, { t: 'The ortho, meta and para carbons' }, { t: 'Only the sp³ carbon' }],
+        a: 0, why: 'Three resonance structures put the + on the carbons ortho and para to the new bond. This is why substituents at those positions matter so much.' },
+      { q: 'What is the last step of electrophilic aromatic substitution?', opts: [
+        { t: 'A weak base removes the H from the sp³ carbon, and the C–H electrons restore the aromatic ring' }, { t: 'The nucleophile attacks the cation at the sp³ carbon' },
+        { t: 'The electrophile leaves again to give back benzene' }, { t: 'A second electrophile adds to the ring' }],
+        a: 0, why: 'Losing H⁺ restores aromaticity, which is a big thermodynamic driving force. Compare this with addition to an alkene, where a nucleophile would attack the cation.' },
+      { q: 'Why is anisole so much more reactive than benzene in electrophilic aromatic substitution?', opts: [
+        { t: 'Attack ortho or para gives an extra resonance structure where the O lone pair stabilizes the carbocation' }, { t: 'The OCH₃ group makes the ring larger' },
+        { t: 'The O lone pair attacks the electrophile directly' }, { t: 'OCH₃ pulls electron density out of the ring by induction' }],
+        a: 0, why: 'In the extra structure the + sits on the carbon bearing OCH₃ and O shares its lone pair, so every atom has an octet. That lowers the energy of the sigma complex.' },
+      { q: 'Why does the NO₂ group direct the next electrophile meta?', opts: [
+        { t: 'Ortho and para attack put the + on the carbon bearing NO₂, which is very unstable, so meta attack is the least bad' }, { t: 'Meta attack places the + next to NO₂ where it is stabilized' },
+        { t: 'NO₂ blocks the ortho and para positions sterically' }, { t: 'NO₂ donates electron density to the meta carbons' }],
+        a: 0, why: 'NO₂ is strongly electron-withdrawing. One ortho/para resonance structure puts + directly on the carbon attached to N⁺, so those pathways are even slower than meta.' },
+      { q: 'Put the events for benzene + 1-chloropropane + AlCl₃ in order.', opts: [
+        { t: 'AlCl₃ takes Cl⁻; a 1,2-hydride shift gives a 2° cation; benzene attacks it; loss of H⁺ gives isopropylbenzene' },
+        { t: 'Benzene attacks first; AlCl₃ removes Cl⁻; a hydride shift; loss of H⁺' },
+        { t: 'AlCl₃ takes Cl⁻; benzene attacks the 1° cation; loss of H⁺ gives propylbenzene' },
+        { t: 'AlCl₃ takes Cl⁻; a methyl shift gives a 2° cation; benzene attacks; loss of H⁺' }],
+        a: 0, why: 'The primary cation rearranges by a hydride shift to the more stable secondary cation before benzene attacks. This is why acylation and Clemmensen are used to get n-alkyl chains.' },
+      { q: 'How many curved arrows are needed to draw the Diels–Alder mechanism?', opts: [{ t: '2' }, { t: '3' }, { t: '4' }, { t: '6' }],
+        a: 1, why: 'Three arrows: the diene’s terminal π bond attacks the dienophile, the dienophile’s π bond attacks the other diene terminus, and the diene’s central π bond shifts to form the new C=C. All in one concerted step.' },
+      { q: 'Why is NBS used instead of Br₂ for allylic bromination?', opts: [
+        { t: 'NBS keeps the Br₂ concentration very low, so the radical substitution beats addition across the C=C' }, { t: 'NBS is a stronger brominating agent than Br₂' },
+        { t: 'NBS creates Br⁺ for an ionic mechanism' }, { t: 'NBS adds Br across the alkene faster' }],
+        a: 0, why: 'NBS slowly releases Br₂ from the HBr formed in the chain. With only a trace of Br₂ around, the allylic radical reacts to give substitution rather than addition.' },
+      { q: 'In allylic bromination, what does the bromine radical do in the first propagation step?', opts: [
+        { t: 'It abstracts an allylic H, giving a resonance-stabilized allylic radical and HBr' }, { t: 'It adds to the alkene to give a carbon radical' },
+        { t: 'It abstracts a vinylic H' }, { t: 'It combines with another Br• to form Br₂' }],
+        a: 0, why: 'The allylic C–H bond is the weakest because the resulting radical is delocalized over three carbons. The allylic radical then reacts with Br₂ to give the product and a new Br•.' },
+      { q: 'Why does the 1,2-adduct convert into the 1,4-adduct at 60 °C?', opts: [
+        { t: 'The C–Br bond re-ionizes to the allylic cation, and bromide recombines at the other end to give the more stable product' }, { t: 'A second equivalent of HBr isomerizes it' },
+        { t: 'The 1,2-adduct is more stable and heat forms it' }, { t: 'Br⁻ does an SN2 on the 1,2-adduct' }],
+        a: 0, why: 'Higher temperature makes the ionization reversible, so the products equilibrate and the more stable 1,4-adduct (more substituted alkene) accumulates.' }
+    ] },
+    { t: 'Electrophilic aromatic substitution', items: [
+      { q: 'What is the electrophile in the nitration of benzene?', opts: [{ t: 'HNO<sub>3</sub>' }, { t: 'NO<sub>2</sub><sup>+</sup>' }, { t: 'NO<sub>3</sub><sup>−</sup>' }, { t: 'NO<sub>2</sub><sup>−</sup>' }],
+        a: 1, why: 'Sulfuric acid protonates HNO₃, which loses water to form the nitronium ion.' },
+      { q: 'Which step is rate-limiting in electrophilic aromatic substitution?', opts: [
+        { t: 'Deprotonation to restore aromaticity' }, { t: 'Formation of the sigma complex' }, { t: 'Formation of the Lewis acid complex' }, { t: 'Protonation of the product' }],
+        a: 1, why: 'Attack of the ring on the electrophile breaks aromaticity, so it has the highest barrier.' },
+      { q: 'Which product forms in the largest amount?', scheme: [benz({ 0: 'Br' }), { ar: 'HNO3, H2SO4' }, '?'], opts: [
+        { m: benz({ 0: 'Br', 1: 'NO2' }), t: 'ortho' }, { m: benz({ 0: 'Br', 2: 'NO2' }), t: 'meta' }, { m: benz({ 0: 'Br', 3: 'NO2' }), t: 'para' }, { m: benz({ 0: 'Br', 2: 'NO2', 4: 'NO2' }), t: '3,5-dinitro' }],
+        a: 2, why: 'Bromine directs ortho/para. Para wins over ortho because it is less crowded.' },
+      { q: 'What happens in this reaction?', scheme: [benz({ 0: 'NO2' }), { ar: 'CH3Cl', un: 'AlCl3' }, '?'], opts: [
+        { m: benz({ 0: 'NO2', 2: '' }), t: 'm-nitrotoluene' }, { m: benz({ 0: 'NO2', 3: '' }), t: 'p-nitrotoluene' }, { m: benz({ 0: 'NO2', 1: '' }), t: 'o-nitrotoluene' }, { t: 'No reaction' }],
+        a: 3, why: 'NO₂ strongly deactivates the ring, so Friedel–Crafts alkylation does not occur.' },
+      { q: 'Where does the new NO<sub>2</sub> group add?', scheme: [benz({ 0: 'OCH3', 3: '' }), { ar: 'HNO3, H2SO4', un: '1 eq' }, '?'], opts: [
+        { m: benz({ 0: 'OCH3', 3: '', 1: 'NO2' }), t: 'next to OCH₃' }, { m: benz({ 0: 'OCH3', 3: '', 2: 'NO2' }), t: 'next to CH₃' }, { t: 'No reaction' }],
+        a: 0, why: 'The stronger activator controls regiochemistry: OCH₃ > alkyl > halogen > NO₂. The para position is already taken, so the product is ortho to OCH₃.' },
+      { q: 'What does a Friedel–Crafts acylation followed by a Clemmensen reduction do to the directing effect?', opts: [
+        { t: 'It converts a meta director (acyl) into an ortho/para director (alkyl)' }, { t: 'It converts an ortho/para director into a meta director' }, { t: 'Nothing; both direct ortho/para' }, { t: 'Nothing; both direct meta' }],
+        a: 0, why: 'The C=O group is deactivating and meta directing. After Zn(Hg)/HCl the group is an alkyl, which is ortho/para directing.' },
+      { q: 'Which set contains only meta directors?', opts: [{ t: 'OH, NO<sub>2</sub>, CN' }, { t: 'NO<sub>2</sub>, CN, CHO' }, { t: 'CH<sub>3</sub>, CHO, Br' }, { t: 'NH<sub>2</sub>, Cl, NO<sub>2</sub>' }],
+        a: 1, why: 'Strongly electron-withdrawing groups (NO₂, CN, carbonyls) are meta directing. OH, NH₂ and alkyls are activators, and halogens are ortho/para.' },
+      { q: 'How many different monobromination products can p-xylene give?', scheme: [benz({ 0: '', 3: '' })], opts: [{ t: '1' }, { t: '2' }, { t: '3' }, { t: '4' }],
+        a: 0, why: 'All four open positions on p-xylene are equivalent (each is ortho to one CH₃), so only one product forms.' },
+      { q: 'What is the major product?', scheme: [benz({ 0: 'OCH3' }), { ar: 'HNO3, H2SO4' }, '?'], opts: [
+        { m: benz({ 0: 'OCH3', 1: 'NO2' }), t: 'ortho' }, { m: benz({ 0: 'OCH3', 2: 'NO2' }), t: 'meta' }, { m: benz({ 0: 'OCH3', 3: 'NO2' }), t: 'para' }, { m: benz({ 0: 'OCH3', 1: 'NO2', 3: 'NO2' }), t: '2,4-dinitro' }],
+        a: 2, why: 'OCH₃ is an ortho/para director. Para is favored over ortho for steric reasons, and one equivalent of HNO₃ adds only one NO₂.' },
+      { q: 'What is the major product?', scheme: [benz({ 0: 'COOH' }), { ar: 'Br2', un: 'FeBr3' }, '?'], opts: [
+        { m: benz({ 0: 'COOH', 1: 'Br' }), t: 'ortho' }, { m: benz({ 0: 'COOH', 2: 'Br' }), t: 'meta' }, { m: benz({ 0: 'COOH', 3: 'Br' }), t: 'para' }, { t: 'No reaction' }],
+        a: 1, why: 'COOH is electron-withdrawing and meta directing. It slows the reaction but does not shut it down.' },
+      { q: 'What is the product?', scheme: [benz({}), { ar: 'CH3COCl', un: 'AlCl3' }, '?'], opts: [
+        { m: acetoph, t: 'acetophenone' }, { m: phChain([[90], [30]]), t: 'ethylbenzene' }, { m: benz({ 0: 'Cl' }), t: 'chlorobenzene' }, { m: phChain([[90]]), t: 'toluene' }],
+        a: 0, why: 'Friedel–Crafts acylation puts an acyl group (C=O) on the ring. The acylium ion does not rearrange, and the product is deactivated, so it stops after one addition.' },
+      { q: 'Rank these by rate of electrophilic aromatic substitution, fastest first.', opts: [
+        { t: 'anisole > toluene > benzene > nitrobenzene' }, { t: 'toluene > anisole > benzene > nitrobenzene' }, { t: 'nitrobenzene > benzene > toluene > anisole' }, { t: 'benzene > anisole > toluene > nitrobenzene' }],
+        a: 0, why: 'A strong donor (OCH₃) beats a weak donor (alkyl), which beats H. A strong withdrawing group (NO₂) is the slowest.' },
+      { q: 'Which compound reacts fastest with Br₂/FeBr₃?', opts: [
+        { m: benz({ 0: 'NO2' }), t: 'nitrobenzene' }, { m: benz({ 0: 'Cl' }), t: 'chlorobenzene' }, { m: benz({ 0: '' }), t: 'toluene' }, { m: benz({ 0: 'OH' }), t: 'phenol' }],
+        a: 3, why: 'OH is a strong activator through lone-pair donation. Alkyl is weaker, Cl is weakly deactivating, and NO₂ strongly deactivating.' },
+      { q: 'Where does Br add in this reaction?', scheme: [benz({ 0: '', 3: 'NO2' }), { ar: 'Br2', un: 'FeBr3' }, '?'], opts: [
+        { m: benz({ 0: '', 1: 'Br', 3: 'NO2' }), t: 'next to CH₃' }, { m: benz({ 0: '', 2: 'Br', 3: 'NO2' }), t: 'next to NO₂' }, { t: 'on the CH₃ group' }, { t: 'No reaction' }],
+        a: 0, why: 'CH₃ directs ortho/para and NO₂ directs meta. Both point to the carbon ortho to CH₃ (which is meta to NO₂), so the groups reinforce each other.' },
+      { q: 'Which compound will not undergo Friedel–Crafts acylation?', opts: [{ t: 'benzene' }, { t: 'toluene' }, { t: 'anisole' }, { t: 'nitrobenzene' }],
+        a: 3, why: 'Friedel–Crafts reactions fail on rings that are strongly deactivated (NO₂, and other meta directors).' },
+      { q: 'Toluene is brominated with Br₂/FeBr₃. How many different monobromination products form in significant amounts?', opts: [{ t: '1' }, { t: '2' }, { t: '3' }, { t: '4' }],
+        a: 1, why: 'CH₃ is an ortho/para director, so only the ortho and para products form in significant amounts. The meta position is not activated and gives almost none.' },
+      { q: 'What reagent puts a removable blocking group on the ring?', opts: [{ t: 'SO₃, H₂SO₄ (sulfonation)' }, { t: 'HNO₃, H₂SO₄' }, { t: 'CH₃Cl, AlCl₃' }, { t: 'Br₂, FeBr₃' }],
+        a: 0, why: 'Sulfonation is reversible. Heating the arene sulfonic acid in dilute aqueous acid removes SO₃H again, so it can block the para position.' },
+      { q: 'Which reagent set converts a C=O attached to a benzene ring into CH₂?', opts: [{ t: 'Zn(Hg), HCl, heat' }, { t: 'NaBH₄, CH₃OH' }, { t: 'H₂CrO₄' }, { t: 'Na, NH₃' }],
+        a: 0, why: 'The Clemmensen reduction converts aryl ketones into alkyl groups. NaBH₄ stops at the alcohol, and H₂CrO₄ is an oxidant.' }
+    ] },
+    { t: 'Synthesis and reagents', items: [
+      { q: 'Which route makes propylbenzene from benzene?', scheme: [benz({}), { ar: '?' }, phChain([[90], [30], [-30]])], opts: [
+        { t: '1-chloropropane, AlCl<sub>3</sub>' }, { t: 'propene, H<sub>2</sub>SO<sub>4</sub>' }, { t: 'propanoyl chloride, AlCl<sub>3</sub>; then Zn(Hg), HCl, heat' }, { t: 'propanoyl chloride, AlCl<sub>3</sub>; then H<sub>2</sub>CrO<sub>4</sub>' }],
+        a: 2, why: 'Direct alkylation rearranges to the isopropyl product. Acylation does not rearrange, and Clemmensen reduction turns C=O into CH₂.' },
+      { q: 'Which sequence gives mainly p-bromonitrobenzene from benzene?', scheme: [benz({}), { ar: '?' }, benz({ 0: 'Br', 3: 'NO2' })], opts: [
+        { t: '1) HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>   2) Br<sub>2</sub>, FeBr<sub>3</sub>' }, { t: '1) Br<sub>2</sub>, FeBr<sub>3</sub>   2) HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>' },
+        { t: '1) Br<sub>2</sub>, hν   2) HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>' }, { t: '1) Cl<sub>2</sub>, AlCl<sub>3</sub>   2) HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>' }],
+        a: 1, why: 'Install the ortho/para director (Br) first. Nitrating first would send Br to the meta position, and the other options give the wrong halogen or the wrong reaction type.' },
+      { q: 'Benzene reacts with 1-chloropropane and AlCl₃. What is the major product?', opts: [
+        { m: phChain([[90], [30], [-30]]), t: 'propylbenzene' }, { m: iPr(), t: 'isopropylbenzene' }, { m: phChain([[90], [30]]), t: 'ethylbenzene' }, { m: benz({ 0: 'Cl' }), t: 'chlorobenzene' }],
+        a: 1, why: 'The primary carbocation shifts a hydride to become the more stable secondary cation, so the isopropyl product forms.' },
+      { q: 'Which product forms?', scheme: [benz({}), { ar: 'Na, NH3', un: 'CH3OH' }, '?'], opts: [
+        { m: rg(6, []), t: 'cyclohexane' }, { m: rg(6, [0]), t: 'cyclohexene' }, { m: rg(6, [0, 2]), t: '1,3-cyclohexadiene' }, { m: rg(6, [0, 3]), t: '1,4-cyclohexadiene' }],
+        a: 3, why: 'The Birch reduction gives the 1,4-diene, with the two remaining double bonds as far apart as possible.' },
+      { q: 'What is the product after acid workup?', scheme: [benzyl, '+', epox, { ar: 'ether', un: 'then H3O+' }, '?'], opts: [
+        { m: phChain([[90], [30], [-30, 'OH']]), t: '2-phenylethanol' },
+        { m: phChain([[90], [30], [-30], [30, 'OH']]), t: '3-phenylpropan-1-ol' },
+        { m: phChain([[90], [30]], function (M, b) { sub(M, b, 90, 'OH'); sub(M, b, -30, ''); }), t: '1-phenylpropan-2-ol' },
+        { m: phChain([[90], [30], [-30], [30], [-30, 'OH']]), t: '4-phenylbutan-1-ol' }],
+        a: 1, why: 'The Grignard carbon attacks the epoxide, adding two carbons and a hydroxyl: PhCH₂ + CH₂CH₂OH.' },
+      { q: 'Which reagent oxidizes this primary alcohol to the aldehyde and stops?', scheme: [zig(5, [], ['', '', '', '', 'OH'])], opts: [
+        { t: 'H<sub>2</sub>CrO<sub>4</sub>' }, { t: 'PCC' }, { t: 'NaBH<sub>4</sub>' }, { t: 'LiAlH<sub>4</sub>' }],
+        a: 1, why: 'PCC is a milder oxidant used without water. H₂CrO₄ continues on to the carboxylic acid, and the hydrides are reducing agents.' },
+      { q: 'What is the name of this compound?', scheme: [benz({ 0: 'NH2', 1: '', 3: 'Br' })], opts: [
+        { t: '4-bromo-6-methylaniline' }, { t: '2-methyl-4-bromoaniline' }, { t: '4-bromo-2-methylaniline' }, { t: '1-amino-4-bromo-2-methylbenzene' }],
+        a: 2, why: 'Aniline is the parent, so C1 carries NH₂. Number toward the lowest locants (2,4) and list substituents alphabetically.' },
+      { q: 'What is the name of this compound?', scheme: [benz({ 0: 'COOH', 2: 'Cl', 4: '' })], opts: [
+        { t: '5-chloro-3-methylbenzoic acid' }, { t: '3-chloro-5-methylbenzoic acid' }, { t: '3-methyl-5-chlorobenzoic acid' }, { t: '1-carboxy-3-chloro-5-methylbenzene' }],
+        a: 1, why: 'Benzoic acid is the parent. Both substituents are meta (3,5), so alphabetical order gives chloro the lower number.' }
+    ] },
+    { t: 'Multi-step synthesis (answer each step)', items: [
+      { title: 'Make p-nitropropylbenzene from benzene.', overall: [benz({}), { ar: '3 steps' }, nitroPropyl()], steps: [
+        { q: 'Which reagents install the three-carbon chain without rearrangement?', scheme: [benz({}), { ar: '?' }, propioph], opts: [
+          { t: '1-chloropropane, AlCl₃' }, { t: 'propanoyl chloride, AlCl₃' }, { t: 'propene, H₂SO₄' }, { t: 'propanal, H⁺' }],
+          a: 1, why: 'Acylation does not rearrange. 1-Chloropropane would give isopropylbenzene through a hydride shift.' },
+        { q: 'Which reagents reduce the ketone to CH₂?', scheme: [propioph, { ar: '?' }, phChain([[90], [30], [-30]])], opts: [
+          { t: 'Zn(Hg), HCl, heat' }, { t: 'NaBH₄, CH₃OH' }, { t: 'H₂CrO₄' }, { t: 'Na, NH₃ (Birch)' }],
+          a: 0, why: 'Clemmensen reduction. NaBH₄ would only give the alcohol, and the other two do something else entirely.' },
+        { q: 'Which reagents add NO₂ para to the chain?', scheme: [phChain([[90], [30], [-30]]), { ar: '?' }, nitroPropyl()], opts: [
+          { t: 'HNO₃, H₂SO₄' }, { t: 'Br₂, FeBr₃' }, { t: 'NaNO₂, HCl' }, { t: 'CH₃COCl, AlCl₃' }],
+          a: 0, why: 'Nitration comes last. If NO₂ went on first, the ring would be too deactivated for Friedel–Crafts. The alkyl group then directs para (major) and ortho.' }
+      ] },
+      { title: 'Make o-bromotoluene from toluene using a blocking group.', overall: [benz({ 0: '' }), { ar: '3 steps' }, benz({ 0: '', 1: 'Br' })], steps: [
+        { q: 'Which reagents block the para position?', scheme: [benz({ 0: '' }), { ar: '?' }, benz({ 0: '', 3: 'SO3H' })], opts: [
+          { t: 'SO₃, H₂SO₄' }, { t: 'HNO₃, H₂SO₄' }, { t: 'Br₂, FeBr₃' }, { t: 'H₃O⁺, heat' }],
+          a: 0, why: 'Sulfonation puts SO₃H mainly at the less hindered para position, and it can be removed later.' },
+        { q: 'Which reagents brominate the ring next?', scheme: [benz({ 0: '', 3: 'SO3H' }), { ar: '?' }, benz({ 0: '', 1: 'Br', 3: 'SO3H' })], opts: [
+          { t: 'NBS, hν' }, { t: 'Br₂, FeBr₃' }, { t: 'HBr' }, { t: 'Br₂, H₂O' }],
+          a: 1, why: 'Electrophilic aromatic bromination. With para blocked, Br goes ortho to CH₃ (which is also meta to SO₃H). NBS/hν would brominate the CH₃ instead.' },
+        { q: 'Which conditions remove the blocking group?', scheme: [benz({ 0: '', 1: 'Br', 3: 'SO3H' }), { ar: '?' }, benz({ 0: '', 1: 'Br' })], opts: [
+          { t: 'H₃O⁺ (dilute H₂SO₄), heat' }, { t: 'NaOH, H₂O' }, { t: 'Zn(Hg), HCl' }, { t: 'SO₃, H₂SO₄' }],
+          a: 0, why: 'Sulfonation is reversible. Hot aqueous acid is the reverse reaction (desulfonation), which leaves H in place of SO₃H.' }
+      ] },
+      { title: 'Make p-nitrobenzoic acid from benzene.', overall: [benz({}), { ar: '3 steps' }, benz({ 0: 'COOH', 3: 'NO2' })], steps: [
+        { q: 'Which reagents make toluene?', scheme: [benz({}), { ar: '?' }, benz({ 0: '' })], opts: [
+          { t: 'CH₃Cl, AlCl₃' }, { t: 'CH₃OH, NaOH' }, { t: 'CH₃Li' }, { t: 'CH₄, hν' }],
+          a: 0, why: 'Friedel–Crafts alkylation. There is no rearrangement problem with CH₃Cl, and the methyl group will become the COOH.' },
+        { q: 'Which reagents add NO₂ para to CH₃?', scheme: [benz({ 0: '' }), { ar: '?' }, benz({ 0: '', 3: 'NO2' })], opts: [
+          { t: 'KMnO₄, heat' }, { t: 'HNO₃, H₂SO₄' }, { t: 'Br₂, hν' }, { t: 'Zn(Hg), HCl' }],
+          a: 1, why: 'Nitrate while CH₃ (an ortho/para director) is still on the ring. COOH is meta directing, so oxidizing first would give the meta product.' },
+        { q: 'Which reagents convert CH₃ into COOH?', scheme: [benz({ 0: '', 3: 'NO2' }), { ar: '?' }, benz({ 0: 'COOH', 3: 'NO2' })], opts: [
+          { t: 'KMnO₄, heat; then H₃O⁺' }, { t: 'PCC' }, { t: 'NaBH₄' }, { t: 'Zn(Hg), HCl' }],
+          a: 0, why: 'Hot KMnO₄ oxidizes a benzylic CH₃ all the way to a carboxylic acid. PCC would stop at the aldehyde at best, and the others are reductants.' }
+      ] },
+      { title: 'Make 3-phenylpropan-1-ol from toluene.', overall: [benz({ 0: '' }), { ar: '3 steps' }, phChain([[90], [30], [-30], [30, 'OH']])], steps: [
+        { q: 'Which reagents functionalize the benzylic position?', scheme: [benz({ 0: '' }), { ar: '?' }, phChain([[90, 'Br']])], opts: [
+          { t: 'NBS, hν' }, { t: 'Br₂, FeBr₃' }, { t: 'HBr' }, { t: 'Br₂, H₂O' }],
+          a: 0, why: 'Radical bromination. The benzylic radical is resonance-stabilized, and NBS keeps Br₂ low. Br₂/FeBr₃ would brominate the ring.' },
+        { q: 'Which reagents turn the benzyl bromide into a nucleophile?', scheme: [phChain([[90, 'Br']]), { ar: '?' }, phChain([[90, 'MgBr']])], opts: [
+          { t: 'Mg, dry ether' }, { t: 'Mg, H₂O' }, { t: 'NaCN' }, { t: 'LiAlH₄' }],
+          a: 0, why: 'A Grignard reagent forms from Mg in dry ether. Water would protonate it immediately.' },
+        { q: 'Which reagents add two carbons and an OH?', scheme: [phChain([[90, 'MgBr']]), { ar: '?' }, phChain([[90], [30], [-30], [30, 'OH']])], opts: [
+          { t: '1) ethylene oxide  2) H₃O⁺' }, { t: '1) formaldehyde  2) H₃O⁺' }, { t: '1) CO₂  2) H₃O⁺' }, { t: '1) acetaldehyde  2) H₃O⁺' }],
+          a: 0, why: 'The Grignard carbon opens the epoxide at its less hindered carbon, adding CH₂CH₂O⁻. Acid workup gives the primary alcohol: PhCH₂ + CH₂CH₂OH.' }
+      ] }
+    ] }
+  ];
+  /* ---------- synthesis builder: every step hides its product, options are reagent -> intermediate pairs ---------- */
+  function etR(map) { var M = benz(map); chain(M, M.r[0], [[90, ''], [30, '']]); return M; }
+  var POOL = ['NBS, hν', 'HNO3, H2SO4', 'Br2, FeBr3', 'SO3, H2SO4', 'Zn(Hg), HCl, heat', 'KMnO4, heat', 'PCC', 'H2CrO4', 'NaBH4, CH3OH', 'LiAlH4, then H3O+',
+    'Mg, dry ether', 'dilute H2SO4, H2O, heat', 'H2, Pt', 'Na, NH3 (l), CH3OH', 'PBr3', 'NaOH, H2O', [ACL, 'AlCl3'], [CH3CL, 'AlCl3'], [ACH, 'then H3O+'],
+    [HCHO, 'then H3O+'], [CO2, 'then H3O+'], [epox, 'then H3O+'], 'Br2, hν', 'CH3MgBr, then H3O+'];
+  function sameR(a, b) { if (Array.isArray(a) && Array.isArray(b)) return a.length === b.length && a.every(function (x, i) { return x === b[i]; }); return a === b; }
+  function syn(title, start, steps) {
+    var S = [start].concat(steps.map(function (s) { return s.p; })), last = S.length - 1;
+    return { title: title, overall: [start, { ar: steps.length + ' steps' }, S[last]], steps: steps.map(function (st, i) {
+      var cur = S[i], nxt = S[i + 1], far = i + 2 <= last ? S[i + 2] : S[0], alt = st.v || cur, ws = [], k = (i * 5 + 2) % POOL.length;
+      while (ws.length < 5) { var c = POOL[k % POOL.length]; k++; if (!sameR(c, st.r) && !(st.skip && st.skip.some(function (x) { return sameR(x, c); }))) ws.push(c); }
+      var o = [{ r: st.r, m: nxt }, { r: st.r, m: alt }, { r: st.r, m: far }, { r: ws[0], m: nxt }, { r: ws[1], m: nxt }, { r: ws[2], m: far }, { r: ws[3], m: alt }, { r: ws[4], m: st.v ? cur : far }];
+      var pos = (i * 3 + 1) % 8, t = o[pos]; o[pos] = o[0]; o[0] = t;
+      return { q: 'Which reagent and intermediate come next?', scheme: [cur, { ar: '?' }, '?'], opts: o, a: pos, why: st.why };
+    }) };
+  }
+  var BIG = syn('Make 2-methyl-3-(2-methylphenyl)propan-1-ol from benzene. You only see the starting point of each step: pick the reagent AND the intermediate it gives.', benz({}), [
+    { r: [CH3CL, 'AlCl3'], p: S_TOL, why: 'Friedel–Crafts alkylation puts on the CH₃ group.' },
+    { r: 'SO3, H2SO4', p: S_TS, v: benz({ 0: '', 1: 'SO3H' }), why: 'Sulfonation puts a removable SO₃H blocking group para to CH₃ (the less hindered position).' },
+    { r: 'Br2, FeBr3', p: S_TSBR, v: benz({ 0: '', 2: 'Br', 3: 'SO3H' }), why: 'With para blocked, Br goes ortho to CH₃, which is also meta to SO₃H, so both groups agree.' },
+    { r: 'dilute H2SO4, H2O, heat', p: S_ARBR, why: 'Sulfonation is reversible: hot dilute aqueous acid removes SO₃H and leaves H.' },
+    { r: 'Mg, dry ether', p: S_MG, why: 'The aryl bromide inserts Mg in dry ether to make the Grignard reagent.' },
+    { r: [epox, 'then H3O+'], p: S_ETOH, v: aryl(function (M, id) { chain(M, id, [[30, ''], [-30, 'OH']]); }), why: 'The Grignard opens the epoxide at a ring carbon and adds CH₂CH₂O⁻, which becomes CH₂CH₂OH after workup.' },
+    { r: 'PCC', p: S_ALD, why: 'PCC stops at the aldehyde. H₂CrO₄ or KMnO₄ would go on to the acid.', skip: ['H2CrO4', 'KMnO4, heat'] },
+    { r: 'CH3MgBr, then H3O+', p: S_ALC, why: 'A Grignard adds one carbon to the aldehyde and gives a secondary alcohol.' },
+    { r: 'PBr3', p: S_BR, why: 'PBr₃ turns the alcohol into the alkyl bromide (SN2).' },
+    { r: 'Mg, dry ether', p: S_GR, why: 'Grignard formation again, now at an sp³ carbon.' },
+    { r: [CO2, 'then H3O+'], p: S_ACID, why: 'The Grignard carbon adds to the carbonyl carbon of CO₂ and workup gives the carboxylic acid.' },
+    { r: 'LiAlH4, then H3O+', p: S_FIN, why: 'LiAlH₄ reduces the acid all the way to the primary alcohol. NaBH₄ is too weak.', skip: ['NaBH4, CH3OH'] }
+  ]);
+  var SYN_A = syn('Make 2-ethylaniline from benzene.', benz({}), [
+    { r: [ETCL, 'AlCl3'], p: PHET, why: 'Friedel–Crafts alkylation with chloroethane. An ethyl group cannot rearrange, so there is no problem here.' },
+    { r: 'SO3, H2SO4', p: etR({ 3: 'SO3H' }), v: etR({ 1: 'SO3H' }), why: 'Block the para position with SO₃H so that the next group goes ortho.' },
+    { r: 'HNO3, H2SO4', p: etR({ 1: 'NO2', 3: 'SO3H' }), v: etR({ 2: 'NO2', 3: 'SO3H' }), why: 'Nitration goes ortho to the alkyl group (the stronger director) and meta to SO₃H.' },
+    { r: 'dilute H2SO4, H2O, heat', p: etR({ 1: 'NO2' }), why: 'Desulfonation removes the blocking group.' },
+    { r: 'Fe, HCl; then NaOH', p: etR({ 1: 'NH2' }), why: 'Fe/HCl reduces the nitro group to an amine (as the ammonium salt), and NaOH frees the aniline.' }
+  ]);
+  var SYN_B = syn('Make 4-bromo-2-nitrobenzoic acid from benzene.', benz({}), [
+    { r: [CH3CL, 'AlCl3'], p: S_TOL, why: 'Friedel–Crafts alkylation puts on the CH₃ that will later become COOH.' },
+    { r: 'Br2, FeBr3', p: benz({ 0: '', 3: 'Br' }), v: benz({ 0: '', 2: 'Br' }), why: 'CH₃ directs ortho/para, and para is the major product.' },
+    { r: 'HNO3, H2SO4', p: benz({ 0: '', 3: 'Br', 1: 'NO2' }), v: benz({ 0: '', 3: 'Br', 2: 'NO2' }), why: 'CH₃ is a stronger activator than Br, so NO₂ goes ortho to CH₃, not ortho to Br.' },
+    { r: 'KMnO4, heat; then H3O+', p: benz({ 0: 'COOH', 3: 'Br', 1: 'NO2' }), why: 'Hot KMnO₄ oxidizes the benzylic CH₃ to COOH. This is done last, because COOH is meta directing.' }
+  ]);
+  var SYN_C = syn('Make 4-phenylbutan-2-ol from toluene.', S_TOL, [
+    { r: 'NBS, hν', p: phChain([[90, 'Br']]), v: benz({ 0: '', 3: 'Br' }), why: 'Radical bromination of the benzylic CH₃. Br₂/FeBr₃ would brominate the ring instead.' },
+    { r: 'Mg, dry ether', p: phChain([[90, 'MgBr']]), why: 'Form the benzylic Grignard reagent.' },
+    { r: [epox, 'then H3O+'], p: phChain([[90], [30], [-30], [30, 'OH']]), v: phChain([[90], [30], [-30, 'OH']]), why: 'The Grignard opens the epoxide, adding two carbons plus OH: PhCH₂–CH₂CH₂OH.' },
+    { r: 'PCC', p: phChain([[90], [30], [-30], [30, 'O', 2]]), why: 'PCC oxidizes the primary alcohol to the aldehyde and stops there.', skip: ['H2CrO4', 'KMnO4, heat'] },
+    { r: 'CH3MgBr, then H3O+', p: (function () { var M = benz({}), c1 = sub(M, M.r[0], 90, ''), c2 = sub(M, c1, 30, ''), c3 = sub(M, c2, -30, ''); sub(M, c3, -90, 'OH'); sub(M, c3, 30, ''); return M; })(), why: 'The Grignard adds a methyl to the aldehyde and gives the secondary alcohol.' }
+  ]);
+  /* ---------- assemble: v3 pair questions + everything from the earlier set (minus near-copies of the worksheet) ---------- */
+  var DROP = ['kinetic and a thermodynamic product', 'what kind of reaction', 'to 400', 'which orbital interaction', 'endo product usually', 'best describes the mechanism',
+    'Cyclobutadiene is anti-aromatic', 'rate-limiting', 'followed by a Clemmensen', 'p-xylene', 'Frost', 'sigma complex', 'most acidic', 'lowest activation energy',
+    'Which diene is the most stable', 'at 0 °C', 'at 60 °C', 'Which product forms?', 'propylbenzene from benzene', 'Benzene reacts with 1-chloropropane', 'What happens in this reaction?', 'Which hydrocarbon has the most acidic'];
+  /* ---------- "which sequence makes it?" (order of EAS steps) ---------- */
+  function sq(q, target, right, wrongs, idx, why) { return { q: q, scheme: [benz({}), { ar: '?' }, target], opts: mk(wrongs, idx, right), a: idx, why: why }; }
+  var HN = '2) HNO3, H2SO4', BR = 'Br2, FeBr3', KM = 'KMnO4, heat; then H3O+', ZN = 'Zn(Hg), HCl, heat';
+  var SEQ = [
+    sq('Which sequence gives mainly m-bromonitrobenzene from benzene?', benz({ 0: 'Br', 2: 'NO2' }), ['1) HNO3, H2SO4', '2) ' + BR],
+      [['1) ' + BR, HN], ['1) HNO3, H2SO4', '2) Br2, hν'], ['1) NBS, hν', HN], ['1) HNO3, H2SO4', '2) NBS, hν'], ['1) HNO3, H2SO4 (2 eq)', '2) ' + BR], ['1) ' + BR, '2) SO3, H2SO4'], ['1) SO3, H2SO4', '2) ' + BR, '3) HNO3, H2SO4']], 4,
+      'NO₂ is meta directing, so it must go on first and the bromination comes second. Brominating first puts NO₂ ortho/para to Br, and NBS or Br₂/hν do radical chemistry rather than ring substitution.'),
+    sq('Which sequence gives mainly p-nitrotoluene from benzene?', benz({ 0: '', 3: 'NO2' }), ['1) CH3Cl, AlCl3', HN],
+      [['1) HNO3, H2SO4', '2) CH3Cl, AlCl3'], ['1) CH3Cl, AlCl3', '2) ' + BR], ['1) NBS, hν', HN], ['1) CH3Cl, NaOH', HN], ['1)', ACL, 'AlCl3', HN], ['1) CH3Cl, AlCl3', '2) ' + KM], ['1) CH3Cl, AlCl3', HN, '3) ' + ZN]], 1,
+      'Alkylate first. Nitrating first would deactivate the ring so much that Friedel–Crafts alkylation fails. CH₃ then directs NO₂ ortho/para (para is major and easier to isolate).'),
+    sq('Which sequence gives m-nitroacetophenone from benzene?', benz({ 0: 'COCH3', 2: 'NO2' }), ['1)', ACL, 'AlCl3', HN],
+      [['1) HNO3, H2SO4', '2)', ACL, 'AlCl3'], ['1)', ACL, 'AlCl3', HN, '3) ' + ZN], ['1) CH3CH2Cl, AlCl3', HN], ['1) CH3Cl, AlCl3', '2) ' + KM, '3) HNO3, H2SO4'], ['1)', ACL, 'AlCl3', '2) ' + BR], ['1)', ACL, 'NaOH', HN], ['1) CH3CHO, H⁺', HN]], 5,
+      'Acylation first installs the meta-directing C=O group, then nitration goes meta. Reversing the order fails because nitrobenzene will not undergo Friedel–Crafts acylation.'),
+    sq('Which sequence gives mainly p-nitrobenzoic acid from benzene?', benz({ 0: 'COOH', 3: 'NO2' }), ['1) CH3Cl, AlCl3', HN, '3) ' + KM],
+      [['1) CH3Cl, AlCl3', '2) ' + KM, '3) HNO3, H2SO4'], ['1) HNO3, H2SO4', '2) CH3Cl, AlCl3', '3) ' + KM], ['1) CH3Cl, AlCl3', HN, '3) ' + ZN], ['1) CH3Cl, AlCl3', HN, '3) PCC'], ['1) CH3Cl, AlCl3', '2) ' + BR, '3) ' + KM], ['1) NBS, hν', HN, '3) ' + KM], ['1) CH3Cl, AlCl3', '2) KMnO4, heat', '3) Br2, FeBr3']], 2,
+      'Nitrate while the CH₃ (an ortho/para director) is still on the ring, then oxidize it. If the CH₃ were oxidized first, COOH would send NO₂ meta.'),
+    sq('Which sequence gives m-nitrobenzoic acid from benzene?', benz({ 0: 'COOH', 2: 'NO2' }), ['1) CH3Cl, AlCl3', '2) ' + KM, '3) HNO3, H2SO4'],
+      [['1) CH3Cl, AlCl3', HN, '3) ' + KM], ['1) HNO3, H2SO4', '2) CH3Cl, AlCl3', '3) ' + KM], ['1) CH3Cl, AlCl3', HN, '3) ' + ZN], ['1) CH3Cl, AlCl3', '2) ' + KM, '3) ' + BR], ['1) CH3Cl, AlCl3', '2) SO3, H2SO4', '3) HNO3, H2SO4', '4) dilute H2SO4, H2O, heat'], ['1) CH3Cl, AlCl3', '2) PCC', '3) HNO3, H2SO4'], ['1) NBS, hν', '2) ' + KM, '3) HNO3, H2SO4']], 6,
+      'Oxidize CH₃ to COOH first so that it directs meta, then nitrate. Doing the nitration first gives the para isomer, and PCC does not oxidize a benzylic CH₃.'),
+    sq('Which sequence gives m-bromoethylbenzene from benzene?', etR({ 2: 'Br' }), ['1)', ACL, 'AlCl3', '2) ' + BR, '3) ' + ZN],
+      [['1)', ACL, 'AlCl3', '2) ' + ZN, '3) ' + BR], ['1) CH3CH2Cl, AlCl3', '2) ' + BR], ['1) ' + BR, '2) CH3CH2Cl, AlCl3'], ['1) ' + BR, '2)', ACL, 'AlCl3', '3) ' + ZN], ['1)', ACL, 'AlCl3', '2) ' + BR, '3) LiAlH4'], ['1)', ACL, 'AlCl3', '2) NBS, hν', '3) ' + ZN], ['1) CH3CH2Cl, AlCl3', '2) NBS, hν']], 0,
+      'Brominate while the acyl group is on the ring, because C=O is meta directing. Clemmensen reduction last turns C=O into CH₂. Doing it in the other order, or alkylating first, puts Br ortho/para to the ethyl group.'),
+    sq('Which sequence gives o-bromotoluene (mainly ortho) from benzene?', benz({ 0: '', 1: 'Br' }), ['1) CH3Cl, AlCl3', '2) SO3, H2SO4', '3) ' + BR, '4) dilute H2SO4, H2O, heat'],
+      [['1) CH3Cl, AlCl3', '2) ' + BR], ['1) ' + BR, '2) CH3Cl, AlCl3'], ['1) CH3Cl, AlCl3', '2) SO3, H2SO4', '3) ' + BR], ['1) CH3Cl, AlCl3', '2) ' + BR, '3) SO3, H2SO4', '4) dilute H2SO4, H2O, heat'], ['1) CH3Cl, AlCl3', '2) SO3, H2SO4', '3) ' + BR, '4) NaOH, H2O'], ['1) CH3Cl, AlCl3', '2) NBS, hν'], ['1) SO3, H2SO4', '2) CH3Cl, AlCl3', '3) ' + BR, '4) dilute H2SO4, H2O, heat']], 3,
+      'Block the para position with SO₃H, brominate ortho, then remove the blocking group with hot dilute acid. Without the block, para dominates. Friedel–Crafts would not work on the sulfonated ring, so the alkylation must come first.'),
+    sq('Which sequence gives m-bromobenzoic acid from benzene?', benz({ 0: 'COOH', 2: 'Br' }), ['1) CH3Cl, AlCl3', '2) ' + KM, '3) ' + BR],
+      [['1) CH3Cl, AlCl3', '2) ' + BR, '3) ' + KM], ['1) ' + BR, '2) CH3Cl, AlCl3', '3) ' + KM], ['1) CH3Cl, AlCl3', '2) ' + KM, '3) NBS, hν'], ['1) CH3Cl, AlCl3', '2) NBS, hν', '3) ' + KM], ['1) CH3Cl, AlCl3', '2) ' + KM, '3) HBr'], ['1) CH3Cl, AlCl3', '2) ' + KM, '3) Br2, hν'], ['1) CH3Cl, AlCl3', '2) Br2, hν', '3) ' + KM]], 2,
+      'COOH is meta directing, so oxidize first and brominate second. Brominating the toluene first puts Br para to CH₃, and NBS or Br₂/hν would attack a benzylic position instead of the ring.'),
+    sq('Which sequence gives mainly p-nitroethylbenzene from benzene?', etR({ 3: 'NO2' }), ['1) CH3CH2Cl, AlCl3', HN],
+      [['1) HNO3, H2SO4', '2) CH3CH2Cl, AlCl3'], ['1)', ACL, 'AlCl3', HN], ['1)', ACL, 'AlCl3', HN, '3) ' + ZN], ['1) CH3CH2Cl, AlCl3', HN, '3) ' + ZN], ['1) NBS, hν', HN], ['1) CH3CH2Cl, AlCl3', '2) ' + KM], ['1) CH3CH2Cl, NaOH', HN]], 3,
+      'Alkylate first (an ethyl group cannot rearrange), then nitrate para. The acylation routes put the C=O group on first, so NO₂ would go meta, and nitrating first blocks the Friedel–Crafts step.')
+  ];
+  function F(s) { return s.items.filter(function (it) { var q = it.q || it.title || ''; return !DROP.some(function (d) { return q.indexOf(d) > -1; }); }); }
+  function cat() { var r = []; for (var i = 0; i < arguments.length; i++) r = r.concat(arguments[i]); return r; }
+  /* ---------- norbornene in the traditional flat style (C7 bridge crossing over, with a gap in the bond behind it) ---------- */
+  function nb(where, label) {
+    var K = 0.2, M = 36, A = { 7: [380, 95], 1: [487, 320], 2: [770, 415], 3: [607, 665], 4: [316, 573], 5: [35, 632], 6: [205, 380] };
+    function T(p) { return [p[0] * K + M, p[1] * K + M]; }
+    var Pt = {}, k, s = '';
+    for (k in A) Pt[k] = T(A[k]);
+    function L(a, b, w) { return '<line x1="' + a[0].toFixed(1) + '" y1="' + a[1].toFixed(1) + '" x2="' + b[0].toFixed(1) + '" y2="' + b[1].toFixed(1) + '"' + (w ? ' style="stroke-width:' + w + '"' : '') + '/>'; }
+    var SW = 2.2;
+    [[7, 1], [7, 4], [1, 2], [2, 3], [3, 4], [4, 5]].forEach(function (b) { s += L(Pt[b[0]], Pt[b[1]], SW); });
+    /* bond 6-1 passes behind 7-4: leave a gap at the crossing */
+    var a = Pt[6], b = Pt[1], c = Pt[7], d = Pt[4];
+    var r1x = b[0] - a[0], r1y = b[1] - a[1], r2x = d[0] - c[0], r2y = d[1] - c[1], den = r1x * r2y - r1y * r2x;
+    var t = ((c[0] - a[0]) * r2y - (c[1] - a[1]) * r2x) / den, len = Math.hypot(r1x, r1y), g = 5 / len;
+    s += L(a, [a[0] + r1x * (t - g), a[1] + r1y * (t - g)], SW) + L([a[0] + r1x * (t + g), a[1] + r1y * (t + g)], b, SW);
+    /* bond 5-6 is the alkene (double) */
+    s += L(Pt[5], Pt[6], SW);
+    var dx = Pt[6][0] - Pt[5][0], dy = Pt[6][1] - Pt[5][1], dl = Math.hypot(dx, dy), nx = dy / dl * 5.5, ny = -dx / dl * 5.5;
+    s += L([Pt[5][0] + dx * 0.14 + nx, Pt[5][1] + dy * 0.14 + ny], [Pt[6][0] - dx * 0.14 + nx, Pt[6][1] - dy * 0.14 + ny], 1.8);
+    if (where) {
+      var from, dir, kind = 'plain', lo = [0, 0];
+      if (where === 'exo') { from = 2; dir = [0.85, -0.55]; kind = 'wedge'; }
+      if (where === 'endo') { from = 2; dir = [0.45, 0.9]; kind = 'dash'; }
+      if (where === 'c7') { from = 7; dir = [0, -1]; }
+      if (where === 'alk') { from = 5; dir = [-0.8, 0.6]; }
+      var f = Pt[from], n = Math.hypot(dir[0], dir[1]), e = [f[0] + dir[0] / n * 24, f[1] + dir[1] / n * 24];
+      if (kind === 'dash') s += L(f, e, 2).replace('/>', ' stroke-dasharray="3.5 3"/>');
+      else if (kind === 'wedge') { var px = -dir[1] / n * 4, py = dir[0] / n * 4; s += '<polygon points="' + f[0].toFixed(1) + ',' + f[1].toFixed(1) + ' ' + (e[0] + px).toFixed(1) + ',' + (e[1] + py).toFixed(1) + ' ' + (e[0] - px).toFixed(1) + ',' + (e[1] - py).toFixed(1) + '" style="fill:currentColor;stroke:none"/>'; }
+      else s += L(f, e, SW);
+      var lx = e[0] + dir[0] / n * (label.length * 3.5 + 2), ly = e[1] + dir[1] / n * 8 + 5;
+      s += '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="middle">' + label + '</text>';
+    }
+    var W = 170 + 2 * M + 26, H = 150 + 2 * M - 4;
+    return '<svg class="struct" viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '" role="img" aria-label="bicyclic structure">' + s + '</svg>';
+  }
+  var EX_Q1 = {
+    q: 'Cyclopentadiene reacts at room temperature with ONE dienophile to give a Diels–Alder adduct. Which dienophile and major product pair is correct? (In the drawings, a bold wedge is exo and a dashed bond is endo.)',
+    scheme: [cpdiene, '+', '?'],
+    opts: [
+      { r: MVK, mh: nb('endo', 'CHO') }, { r: acrolein, mh: nb('exo', 'CHO') }, { r: acrolein, mh: nb('endo', 'CHO') }, { r: acrolein, mh: nb('c7', 'CHO') },
+      { r: acrolein, mh: nb('alk', 'CHO') }, { r: mve, mh: nb('endo', 'OCH₃') }, { r: zig(2, [0]), mh: nb(null) }, { r: acrolein, m: chex([0], 3) }],
+    a: 2,
+    why: 'The diene’s C1 and C4 bond to the two dienophile carbons. Because C1 and C4 are joined through the CH₂ of the five-membered ring, the new ring is bridged: bicyclo[2.2.1]. The old C2=C3 becomes the ring alkene. The CHO group is endo (tucked under the alkene bridge) because of secondary orbital overlap in the transition state, and endo is the kinetic product. Exo is the less favored isomer, the CHO cannot sit on the CH₂ bridge or on the alkene, an electron-rich or unactivated dienophile will not react at room temperature, and losing the bridge gives the wrong skeleton. The methyl vinyl ketone option shows a CHO product, which does not match it.' };
+  var EX_Q2 = {
+    q: 'Which diene and dienophile react to give this bicyclic product?',
+    scheme: [{ h: nb('endo', 'CHO') }],
+    opts: [{ r: [cpdiene, MVK] }, { r: [rg(6, [0, 2]), acrolein] }, { r: [cpdiene, acrolein] }, { r: [rg(5, [0]), acrolein] }, { r: [furan, acrolein] },
+      { r: [zig(4, [0, 2]), acrolein] }, { r: [cpdiene, mve] }, { r: [rg(7, [0, 2, 4]), acrolein] }],
+    a: 2,
+    why: 'Work backwards: the ring alkene must have come from the diene’s middle carbons, and the CH₂ bridge shows the diene was a five-membered ring, so the diene is cyclopentadiene. The remaining two sp³ carbons and the CHO come from acrolein. Cyclohexadiene gives a bicyclo[2.2.2] product, furan gives an oxygen bridge, cycloheptatriene a larger bridge, butadiene gives a plain cyclohexene, and cyclopentene has no diene to react.' };
+  /* ---------- Diels–Alder stereochemistry set: all bicyclic ---------- */
+  var E = 'CO2CH3';
+  function ester(M, id, ang, f) { var c = sub(M, id, ang, ''); sub(M, c, ang + 60 * f, 'O', 2); var o = sub(M, c, ang - 60 * f, 'O'); sub(M, o, ang, ''); }
+  function dpl(l, r, f1, f2) { var M = B('', [[0, 0, '', 2]]); ester(M, 0, l, f1); ester(M, 1, r, f2); return M; }
+  var MALE = dpl(120, 60, 1, -1), FUMA = dpl(120, -60, 1, 1);
+  function crot(cis) { var M = B('', [[0, 0, '', 2], [0, 120, '']]); if (cis) ester(M, 1, 60, -1); else ester(M, 1, -60, 1); return M; }
+  var DIR = { '2': { exo: [0.85, -0.55], endo: [0.45, 0.9] }, '3': { exo: [0.9, 0.4], endo: [-0.3, 1.0] }, '1': { plain: [0.8, -0.55] }, '7': { plain: [0, -1] } };
+  var ACRO = acrolein;
+  /* nbx: norbornene in the traditional flat style. items = [{c:'2'|'3'|'1'|'7', t:'exo'|'endo'|'plain', l:label}], o = {sat:true, bridge:'O'} */
+  function nbx(items, o) {
+    o = o || {};
+    var K = 0.2, M = 36, A = { 7: [380, 95], 1: [487, 320], 2: [770, 415], 3: [607, 665], 4: [316, 573], 5: [35, 632], 6: [205, 380] }, Pt = {}, k, s = '', SW = 2.2;
+    if (o.two) { A[7] = [340, 90]; A[8] = [455, 105]; }
+    for (k in A) Pt[k] = [A[k][0] * K + M, A[k][1] * K + M];
+    function L(a, b, w) { return '<line x1="' + a[0].toFixed(1) + '" y1="' + a[1].toFixed(1) + '" x2="' + b[0].toFixed(1) + '" y2="' + b[1].toFixed(1) + '" style="stroke-width:' + (w || SW) + '"/>'; }
+    function cut(a, b, d) { var dx = b[0] - a[0], dy = b[1] - a[1], n = Math.hypot(dx, dy); return [a[0] + dx / n * d, a[1] + dy / n * d]; }
+    var c7 = o.bridge ? 9 : 0;
+    if (o.two) s += L(Pt[1], Pt[8]) + L(Pt[8], Pt[7]) + L(Pt[7], Pt[4]); else s += L(cut(Pt[7], Pt[1], c7), Pt[1]) + L(cut(Pt[7], Pt[4], c7), Pt[4]);
+    [[1, 2], [2, 3], [3, 4], [4, 5]].forEach(function (b) { s += L(Pt[b[0]], Pt[b[1]]); });
+    var a = Pt[6], b = Pt[1], c = Pt[7], d = Pt[4], r1x = b[0] - a[0], r1y = b[1] - a[1], r2x = d[0] - c[0], r2y = d[1] - c[1], den = r1x * r2y - r1y * r2x;
+    var t = ((c[0] - a[0]) * r2y - (c[1] - a[1]) * r2x) / den, len = Math.hypot(r1x, r1y), g = 5 / len;
+    s += L(a, [a[0] + r1x * (t - g), a[1] + r1y * (t - g)]) + L([a[0] + r1x * (t + g), a[1] + r1y * (t + g)], b) + L(Pt[5], Pt[6]);
+    if (!o.sat) {
+      var dx = Pt[6][0] - Pt[5][0], dy = Pt[6][1] - Pt[5][1], dl = Math.hypot(dx, dy), nx = dy / dl * 5.5, ny = -dx / dl * 5.5;
+      s += L([Pt[5][0] + dx * 0.14 + nx, Pt[5][1] + dy * 0.14 + ny], [Pt[6][0] - dx * 0.14 + nx, Pt[6][1] - dy * 0.14 + ny], 1.8);
+    }
+    if (o.bridge) s += '<text x="' + Pt[7][0].toFixed(1) + '" y="' + (Pt[7][1] + 1).toFixed(1) + '" text-anchor="middle" dominant-baseline="central">' + o.bridge + '</text>';
+    items.forEach(function (it) {
+      var dir = DIR[it.c][it.t], n = Math.hypot(dir[0], dir[1]), f = Pt[it.c], len2 = it.l ? 24 : 17, e = [f[0] + dir[0] / n * len2, f[1] + dir[1] / n * len2];
+      if (it.t === 'endo') s += L(f, e, 2).replace('/>', ' stroke-dasharray="3.5 3"/>');
+      else if (it.t === 'exo') { var px = -dir[1] / n * 4, py = dir[0] / n * 4; s += '<polygon points="' + f[0].toFixed(1) + ',' + f[1].toFixed(1) + ' ' + (e[0] + px).toFixed(1) + ',' + (e[1] + py).toFixed(1) + ' ' + (e[0] - px).toFixed(1) + ',' + (e[1] - py).toFixed(1) + '" style="fill:currentColor;stroke:none"/>'; }
+      else s += L(f, e);
+      if (it.l) s += '<text x="' + (e[0] + dir[0] / n * (it.l.length * 3.5 + 2)).toFixed(1) + '" y="' + (e[1] + dir[1] / n * 8 + 5).toFixed(1) + '" text-anchor="middle">' + it.l.replace(/([A-Za-z])(\d)/g, '$1<tspan style="baseline-shift:sub" font-size="10">$2</tspan>') + '</text>';
+    });
+    return '<svg class="struct" viewBox="0 0 300 236" width="300" height="236" role="img" aria-label="bicyclic structure">' + s + '</svg>';
+  }
+  function X(items, o) { return { mh: nbx(items, o) }; }
+  function mmh(w, idx, r) { var l = w.slice(); l.splice(idx, 0, r); return l.map(function (x) { return { h: x.mh }; }); }
+  function D2(a, b) { return [{ c: '2', t: a, l: E }, { c: '3', t: b, l: E }]; }
+  var SX = [
+    { q: 'Cyclopentadiene reacts with dimethyl maleate (a cis dienophile). Predict the major product. (Bold wedge = exo, dashed bond = endo.)', scheme: [cpdiene, '+', MALE, { ar: 'heat' }, '?'],
+      opts: mmh([X(D2('exo', 'exo')), X(D2('endo', 'exo')), X([{ c: '2', t: 'endo', l: E }]), X([{ c: '7', t: 'plain', l: E }]), X(D2('endo', 'endo'), { sat: true }), X(D2('endo', 'endo'), { bridge: 'O' }), X([{ c: '2', t: 'endo', l: E }, { c: '2', t: 'exo', l: E }])], 2, X(D2('endo', 'endo'))), a: 2,
+      why: 'Two things are decided here. First, the diene closes a bicyclo[2.2.1] ring system. Second, a cis dienophile keeps its esters on the same face, so they end up cis on the new two-carbon bridge. The endo rule (secondary orbital overlap) puts both esters endo, tucked under the alkene bridge. Exo,exo is cis but the minor kinetic product, endo/exo would be trans, and the others change the skeleton or the number of esters.' },
+    { q: 'Cyclopentadiene reacts with dimethyl fumarate (a trans dienophile). Predict the major product.', scheme: [cpdiene, '+', FUMA, { ar: 'heat' }, '?'],
+      opts: mmh([X(D2('endo', 'endo')), X(D2('exo', 'exo')), X([{ c: '3', t: 'exo', l: E }]), X([{ c: '7', t: 'plain', l: E }]), X(D2('endo', 'exo'), { sat: true }), X(D2('endo', 'exo'), { bridge: 'O' }), X([{ c: '3', t: 'endo', l: E }, { c: '3', t: 'exo', l: E }])], 4, X(D2('endo', 'exo'))), a: 4,
+      why: 'A trans dienophile puts its two esters on opposite faces, so one ester must be endo and the other exo (a racemic pair; one enantiomer is drawn). Both endo or both exo would be cis, which needs the cis dienophile (maleate).' },
+    { q: 'Cyclopentadiene reacts with methyl (Z)-crotonate, where the CH₃ and CO₂CH₃ are cis. Predict the major product.', scheme: [cpdiene, '+', crot(true), { ar: 'heat' }, '?'],
+      opts: mmh([X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'exo', l: 'CH3' }]), X([{ c: '2', t: 'exo', l: E }, { c: '3', t: 'endo', l: 'CH3' }]), X([{ c: '2', t: 'exo', l: E }, { c: '3', t: 'exo', l: 'CH3' }]), X([{ c: '2', t: 'endo', l: E }]), X([{ c: '3', t: 'endo', l: 'CH3' }]), X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'endo', l: 'CH3' }], { sat: true }), X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'endo', l: 'CH3' }], { bridge: 'O' })], 0, X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'endo', l: 'CH3' }])), a: 0,
+      why: 'The two groups of a cis dienophile stay cis, so the CH₃ and ester are on the same face. The endo rule says the ester (the electron-withdrawing group) is endo, so the CH₃ is endo too. Endo/exo or exo/endo would be trans, and exo,exo is the minor kinetic product.' },
+    { q: 'Cyclopentadiene reacts with methyl (E)-crotonate, where the CH₃ and CO₂CH₃ are trans. Predict the major product.', scheme: [cpdiene, '+', crot(false), { ar: 'heat' }, '?'],
+      opts: mmh([X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'endo', l: 'CH3' }]), X([{ c: '2', t: 'exo', l: E }, { c: '3', t: 'endo', l: 'CH3' }]), X([{ c: '2', t: 'exo', l: E }, { c: '3', t: 'exo', l: 'CH3' }]), X([{ c: '2', t: 'endo', l: E }]), X([{ c: '3', t: 'exo', l: 'CH3' }]), X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'exo', l: 'CH3' }], { sat: true }), X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'exo', l: 'CH3' }], { bridge: 'O' })], 5, X([{ c: '2', t: 'endo', l: E }, { c: '3', t: 'exo', l: 'CH3' }])), a: 5,
+      why: 'The trans relationship is kept (one group endo, one exo), and the endo rule decides which: the ester (the electron-withdrawing group) is endo, so the CH₃ is exo. The ester-exo/CH₃-endo isomer is the minor diastereomer. Both endo or both exo would be cis.' },
+    { q: '1-Methylcyclopentadiene reacts with acrolein. Predict the major product (“ortho” rule plus the endo rule).', scheme: [rg(5, [0, 2], null, 90, { 0: '' }), '+', ACRO, { ar: 'heat' }, '?'],
+      opts: mmh([X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '3', t: 'endo', l: 'CHO' }]), X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '2', t: 'exo', l: 'CHO' }]), X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '3', t: 'exo', l: 'CHO' }]), X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '7', t: 'plain', l: 'CHO' }]), X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '2', t: 'endo', l: 'CHO' }], { sat: true }), X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '2', t: 'endo', l: 'CHO' }], { bridge: 'O' }), X([{ c: '2', t: 'endo', l: 'CHO' }])], 3, X([{ c: '1', t: 'plain', l: 'CH3' }, { c: '2', t: 'endo', l: 'CHO' }])), a: 3,
+      why: 'A diene with a substituent on its terminal carbon gives the “ortho” (1,2) product, so the CHO is on the carbon next to the methyl-bearing bridgehead. The CHO is endo (endo rule). The “meta” isomer is minor, exo is the minor stereoisomer, and the other options change the skeleton or lose the methyl.' },
+    { q: 'Which diene and dienophile give this product?', scheme: [{ h: nbx(D2('endo', 'exo')) }],
+      opts: [{ r: [cpdiene, MALE] }, { r: [furan, FUMA] }, { r: [cpdiene, FUMA] }, { r: [rg(6, [0, 2]), FUMA] }, { r: [cpdiene, MACR] }, { r: [rg(5, [0]), FUMA] }, { r: [zig(4, [0, 2]), FUMA] }, { r: [rg(7, [0, 2, 4]), FUMA] }], a: 2,
+      why: 'The CH₂ bridge means the diene is cyclopentadiene. One endo and one exo ester are trans, so the dienophile is the trans diester (fumarate), not maleate. Furan would put an O in the bridge, cyclohexadiene gives a larger bicycle, butadiene gives a monocycle, and cyclopentene has no diene to react.' }
+  ];
+  /* ---------- bicyclo[2.2.2] and heteroatom-bridged additions ---------- */
+  function bco(items, o) {
+    o = o || {};
+    var P = { c1: [55, 125], c4: [245, 110], a1: [130, 135], a2: [214, 128], s1: [86, 178], s2: [170, 171], f1: [108, 60], f2: [192, 53] }, s = '', SW = 2.2;
+    function L(a, b, w) { return '<line x1="' + a[0].toFixed(1) + '" y1="' + a[1].toFixed(1) + '" x2="' + b[0].toFixed(1) + '" y2="' + b[1].toFixed(1) + '" style="stroke-width:' + (w || SW) + '"/>'; }
+    s += L(P.c1, P.f1) + L(P.f1, P.f2) + L(P.f2, P.c4) + L(P.c1, P.a1) + L(P.a1, P.a2) + L(P.a2, P.c4) + L(P.c1, P.s1) + L(P.s1, P.s2) + L(P.s2, P.c4);
+    if (!o.sat) s += L([P.a1[0] + 6, P.a1[1] - 7], [P.a2[0] - 6, P.a2[1] - 7], 1.8);
+    var DR = { f1: { exo: [-0.7, -1], endo: [0.1, -1] }, f2: { exo: [-0.1, -1], endo: [0.7, -1] } };
+    items.forEach(function (it) {
+      var d = DR[it.c][it.t], n = Math.hypot(d[0], d[1]), f = P[it.c], len = it.l ? 26 : 18, e = [f[0] + d[0] / n * len, f[1] + d[1] / n * len];
+      if (it.t === 'endo') s += L(f, e, 2).replace('/>', ' stroke-dasharray="3.5 3"/>');
+      else { var px = -d[1] / n * 4, py = d[0] / n * 4; s += '<polygon points="' + f[0].toFixed(1) + ',' + f[1].toFixed(1) + ' ' + (e[0] + px).toFixed(1) + ',' + (e[1] + py).toFixed(1) + ' ' + (e[0] - px).toFixed(1) + ',' + (e[1] - py).toFixed(1) + '" style="fill:currentColor;stroke:none"/>'; }
+      if (it.l) s += '<text x="' + (e[0] + d[0] / n * (it.l.length * 3.5 + 2)).toFixed(1) + '" y="' + (e[1] + d[1] / n * 8 + 5).toFixed(1) + '" text-anchor="middle">' + it.l.replace(/([A-Za-z])(\d)/g, '$1<tspan style="baseline-shift:sub" font-size="10">$2</tspan>') + '</text>';
+    });
+    return '<svg class="struct" viewBox="0 0 300 236" width="300" height="236" role="img" aria-label="bicyclic structure">' + s + '</svg>';
+  }
+  function XB(items, o) { var m = { f1: '2', f2: '3', '2': '2', '3': '3' }; items = items.map(function (i) { return { c: m[i.c], t: i.t, l: i.l }; }); var oo = { two: true }; for (var k in (o || {})) oo[k] = o[k]; return X(items, oo); }
+  function DB(a, b) { return [{ c: 'f1', t: a, l: E }, { c: 'f2', t: b, l: E }]; }
+  var cyhex = rg(6, [0, 2]);
+  SX.push(
+    { q: 'Cyclohexa-1,3-diene reacts with dimethyl maleate (a cis dienophile). Predict the major product. (Bold wedge = exo, dashed bond = endo, meaning on the same side as the C=C bridge.)', scheme: [cyhex, '+', MALE, { ar: 'heat' }, '?'],
+      opts: mmh([XB(DB('exo', 'exo')), XB(DB('endo', 'exo')), XB([{ c: 'f1', t: 'endo', l: E }]), X(D2('endo', 'endo')), XB(DB('endo', 'endo'), { sat: true }), XB([{ c: 'f2', t: 'exo', l: E }]), X(D2('endo', 'endo'), { bridge: 'O' })], 3, XB(DB('endo', 'endo'))), a: 3,
+      why: 'A six-membered cyclic diene closes a bicyclo[2.2.2] ring system (three two-carbon bridges), not the bicyclo[2.2.1] norbornene you get from cyclopentadiene. The cis dienophile keeps both esters on the same face, and the endo rule puts them both endo, syn to the C=C bridge. Exo,exo is the minor kinetic product, endo/exo would need a trans dienophile, and the five-membered skeletons have the wrong ring size.' },
+    { q: 'Cyclohexa-1,3-diene reacts with acrolein. Predict the major product.', scheme: [cyhex, '+', ACRO, { ar: 'heat' }, '?'],
+      opts: mmh([XB([{ c: 'f1', t: 'exo', l: 'CHO' }]), XB([{ c: 'f1', t: 'endo', l: 'CHO' }, { c: 'f2', t: 'endo', l: 'CHO' }]), XB([{ c: 'f1', t: 'endo', l: 'CHO' }], { sat: true }), X([{ c: '2', t: 'endo', l: 'CHO' }]), X([{ c: '7', t: 'plain', l: 'CHO' }]), XB([{ c: 'f2', t: 'endo', l: 'CHO' }, { c: 'f1', t: 'exo', l: 'CHO' }]), X([{ c: '2', t: 'exo', l: 'CHO' }], { bridge: 'O' })], 4, XB([{ c: 'f1', t: 'endo', l: 'CHO' }])), a: 4,
+      why: 'Acrolein adds one CHO, so the product has a single substituent on the new two-carbon bridge. The ring is bicyclo[2.2.2] because the diene is six-membered, and the endo rule puts the CHO syn to the C=C bridge. Exo is the minor stereoisomer, two CHO groups would need a second acrolein, a saturated bridge has lost the alkene, and the norbornene drawings have the wrong ring size.' },
+    { q: 'Furan reacts with dimethyl maleate. Furan Diels–Alder reactions are reversible, so on heating the more stable (thermodynamic) adduct predominates. Predict the major product.', scheme: [furan, '+', MALE, { ar: 'heat' }, '?'],
+      opts: mmh([X(D2('endo', 'endo'), { bridge: 'O' }), X(D2('endo', 'exo'), { bridge: 'O' }), X(D2('exo', 'exo')), X(D2('exo', 'exo'), { bridge: 'O', sat: true }), X([{ c: '2', t: 'exo', l: E }], { bridge: 'O' }), X(D2('exo', 'exo'), { bridge: 'S' }), X([{ c: '2', t: 'exo', l: E }, { c: '2', t: 'endo', l: E }], { bridge: 'O' })], 1, X(D2('exo', 'exo'), { bridge: 'O' })), a: 1,
+      why: 'The oxygen of furan ends up as the one-atom bridge, giving a 7-oxanorbornene. The cis dienophile keeps both esters on the same face. Furan adducts are special: the endo isomer forms faster but the reaction reverses easily, and the less crowded exo,exo isomer is the more stable one, so it wins under thermodynamic control. A CH₂ bridge would need cyclopentadiene, thiophene is too aromatic to react this way, and endo/exo would need a trans dienophile.' }
+  );
+  var DATA = [
+    { t: 'Conjugation, dienes and Diels–Alder', items: cat(DATA3[0].items, F(DATA2[0]), F(DATA2[2])) },
+    { t: 'Diels–Alder: bicyclic products, endo/exo and stereochemistry', items: [EX_Q1, EX_Q2].concat(SX) },
+    { t: 'Molecular orbitals', items: F(DATA2[1]) },
+    { t: 'Aromaticity', items: cat(DATA3[1].items, F(DATA2[3])) },
+    { t: 'Frost circles', items: DATA3[2].items },
+    { t: 'Mechanisms: does this reagent give this product?', items: cat(DATA3[3].items, F(DATA2[4])) },
+    { t: 'Electrophilic aromatic substitution', items: cat(DATA3[4].items, F(DATA2[5])) },
+    { t: 'Reagents, naming and single-step predictions', items: F(DATA2[6]) },
+    { t: 'Which sequence makes it?', items: SEQ },
+    { t: 'Multi-step synthesis: plan it one step at a time', items: [BIG, SYN_A, SYN_B, SYN_C] }
+  ];
+  /* ---------- rendering ---------- */
+  var root = document.getElementById('root'), reg = [], done = 0, first = 0, total = 0;
+  var ARROW = '<svg viewBox="0 0 64 12" width="64" height="12" aria-hidden="true"><path d="M2 6H60M54 1.5L61 6L54 10.5"/></svg>';
+  function fmt(s) { return String(s).replace(/([A-Za-z])(\d)/g, '$1<sub>$2</sub>').replace(/\+/g, '<sup>+</sup>'); }
+  function rgHtml(r) {
+    if (r == null) return '';
+    if (!Array.isArray(r)) r = [r];
+    return r.map(function (x) { return x instanceof Mol ? svg(x, 17) : '<span class="rg">' + fmt(x) + '</span>'; }).join('');
+  }
+  function sch(items) {
+    return '<div class="eq">' + items.map(function (x) {
+      if (x instanceof Mol) return svg(x);
+      if (x && x.h) return x.h;
+      if (typeof x === 'string') return '<span class="sym">' + x + '</span>';
+      return '<div class="arrow">' + rgHtml(x.ar) + ARROW + rgHtml(x.un) + '</div>';
+    }).join('') + '</div>';
+  }
+  function optHtml(o, i) {
+    var l = 'abcdefghijkl'[i], body;
+    if (o.r != null && o.m) body = '<span class="rxo"><span class="arrow">' + rgHtml(o.r) + ARROW + '</span>' + svg(o.m) + '</span>';
+    else if (o.r != null) body = '<span class="rgs">' + rgHtml(o.r) + '</span>';
+    else body = (o.h ? o.h : o.m ? svg(o.m) : '');
+    if (o.t) body += '<span class="' + (o.m || o.h ? 'cap' : 'txt') + '">' + o.t + '</span>';
+    return '<button type="button" class="opt" data-i="' + i + '"><b class="let">' + l + ')</b><span class="body">' + body + '</span></button>';
+  }
+  function optsCls(opts) {
+    var rx = opts.some(function (o) { return o.r != null && o.m; });
+    var dr = opts.some(function (o) { return o.m || o.h; });
+    var rm = opts.some(function (o) { return o.r != null && [].concat(o.r).some(function (x) { return x instanceof Mol; }); });
+    if (rx) return 'grid rx';
+    if (dr) return 'grid';
+    if (rm || opts.length >= 6) return 'cols';
+    return '';
+  }
+  function render() {
+    reg.length = 0; done = 0; first = 0;
+    var h = '', num = 0;
+    DATA.forEach(function (sec) {
+      h += '<h2 class="sec">' + sec.t + '</h2>';
+      sec.items.forEach(function (it) {
+        num++;
+        if (it.steps) {
+          h += '<section class="q"><div class="qh"><span class="n">' + num + ')</span><p class="qtext">' + it.title + '</p></div>' + sch(it.overall);
+          it.steps.forEach(function (st, si) {
+            var sid = reg.push({ a: st.a, why: st.why, t: 0, d: 0 }) - 1;
+            h += '<div class="step item" data-id="' + sid + '"><p class="qtext"><span class="n">Step ' + (si + 1) + '.</span> ' + st.q + '</p>' + sch(st.scheme) +
+              '<div class="opts ' + optsCls(st.opts) + '">' + st.opts.map(function (o, i) { return optHtml(o, i); }).join('') + '</div><p class="fb" role="status" aria-live="polite"></p></div>';
+          });
+          h += '</section>';
+        } else if (it.group) {
+          h += '<section class="q"><div class="qh"><span class="n">' + num + ')</span><p class="qtext">' + it.group + '</p></div><div class="cards">';
+          it.cards.forEach(function (c, ci) {
+            var id = reg.push({ a: c.a, why: c.why, t: 0, d: 0 }) - 1;
+            h += '<div class="card item" data-id="' + id + '"><div class="cardmol"><b class="let">' + 'abcdefgh'[ci] + ')</b>' + svg(c.m) + '</div><div class="opts row">' +
+              ['Aromatic', 'Anti-aromatic', 'Nonaromatic'].map(function (t, i) { return '<button type="button" class="opt" data-i="' + i + '"><span class="body">' + t + '</span></button>'; }).join('') +
+              '</div><p class="fb" role="status" aria-live="polite"></p></div>';
+          });
+          h += '</div></section>';
+        } else {
+          var id2 = reg.push({ a: it.a, why: it.why, t: 0, d: 0 }) - 1;
+          
+          h += '<section class="q item" data-id="' + id2 + '"><div class="qh"><span class="n">' + num + ')</span><p class="qtext">' + it.q + '</p></div>' +
+            (it.scheme ? sch(it.scheme) : '') +
+            '<div class="opts ' + optsCls(it.opts) + '">' + it.opts.map(function (o, i) { return optHtml(o, i); }).join('') + '</div>' +
+            '<p class="fb" role="status" aria-live="polite"></p></section>';
+        }
+      });
+    });
+    root.innerHTML = h; total = reg.length; update();
+  }
+  function update() {
+    var pct = total ? Math.round(done / total * 100) : 0;
+    document.getElementById('barFill').style.width = pct + '%';
+    document.getElementById('barWrap').setAttribute('aria-valuenow', pct);
+    var s = '<b>' + done + '</b> of ' + total + ' answered · <b>' + first + '</b> right on the first try';
+    if (done === total && total) s = 'All done: <b>' + first + '</b> of ' + total + ' right on the first try (' + Math.round(first / total * 100) + '%)';
+    document.getElementById('score').innerHTML = s;
+  }
+  root.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.opt') : null;
+    if (!b || b.disabled) return;
+    var box = b.closest('.item'), r = reg[+box.getAttribute('data-id')];
+    if (r.d) return;
+    var fb = box.querySelector('.fb');
+    if (+b.getAttribute('data-i') === r.a) {
+      b.classList.add('good'); r.d = 1; done++; if (!r.t) first++;
+      Array.prototype.forEach.call(box.querySelectorAll('.opt'), function (x) { x.disabled = true; });
+      fb.className = 'fb good'; fb.textContent = 'Correct. ' + r.why;
+    } else {
+      r.t++; b.classList.add('bad'); b.disabled = true;
+      fb.className = 'fb bad'; fb.textContent = 'Not quite. Try another.';
+    }
+    update();
+  });
+  document.getElementById('resetBtn').addEventListener('click', function () { render(); window.scrollTo(0, 0); });
+  render();
+
+  /* ---------- theme toggle ---------- */
+  var rt = document.documentElement, tb = document.getElementById('themeBtn');
+  function eff() { var t = rt.getAttribute('data-theme'); if (t) return t; return (window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  try { var sv = localStorage.getItem('m2practice-theme'); if (sv === 'dark' || sv === 'light') rt.setAttribute('data-theme', sv); } catch (e) {}
+  function upd() { var d = eff() === 'dark'; tb.setAttribute('aria-pressed', d ? 'true' : 'false'); tb.textContent = d ? '☀' : '☾'; tb.title = d ? 'Switch to light mode' : 'Switch to dark mode'; }
+  tb.addEventListener('click', function () { var n = eff() === 'dark' ? 'light' : 'dark'; rt.setAttribute('data-theme', n); try { localStorage.setItem('m2practice-theme', n); } catch (e) {} upd(); });
+  upd();
+})();
+</script>
+
